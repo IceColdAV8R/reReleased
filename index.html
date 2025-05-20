@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="script.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>HTML Renderer</title>
@@ -8,11 +9,6 @@
     <textarea id="htmlInput" rows="5" placeholder="Enter full HTML, e.g., <!DOCTYPE html><html><body><h1>Hello World!</h1></body></html>"></textarea>
     <button onclick="renderHTML()">Render</button>
 
-    <script>
-        function renderHTML() {
-            const input = document.getElementById('htmlInput').value;
-            document.documentElement.innerHTML = input;
-        }
-    </script>
+
 </body>
 </html>
