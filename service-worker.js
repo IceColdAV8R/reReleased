@@ -5,9 +5,9 @@ const CACHE_NAME = 'my-pwa-cache-v1';
 
 // Files to cache
 const FILES_TO_CACHE = [
-  '/',           // Caches the root (index.html)
-  'reReleased/styles.css', // Your CSS file
-  'reReleased/script.js'   // Your JavaScript file
+  'https://icecoldav8r.github.io/reReleased/',           // Caches the root (index.html)
+  'https://icecoldav8r.github.io/reReleased/styles.css', // Your CSS file
+  'https://icecoldav8r.github.io/reReleased/script.js'   // Your JavaScript file
 ];
 
 // Install event: Cache the files
@@ -47,7 +47,7 @@ self.addEventListener('fetch', event => {
       })
       .catch(() => {
         // Fallback to cached index.html if network fails and no cache match
-        return caches.match('/index.html');
+        return caches.match('https://icecoldav8r.github.io/reReleased/index.html');
       })
   );
 });
