@@ -6,8 +6,8 @@ const CACHE_NAME = 'my-pwa-cache-v1';
 // Files to cache
 const FILES_TO_CACHE = [
   '/',           // Caches the root (index.html)
-  '/styles.css', // Your CSS file
-  '/script.js'   // Your JavaScript file
+  'reReleased/styles.css', // Your CSS file
+  'reReleased/script.js'   // Your JavaScript file
 ];
 
 // Install event: Cache the files
