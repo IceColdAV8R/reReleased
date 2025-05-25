@@ -1,6 +1,17 @@
 let textContent = '';
 const fltRls = {};
-//Regex
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('src/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(error => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
+}
 
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
 displayClock();
@@ -47,7 +58,28 @@ function loadRelease() {
   var payload = /PAYLOAD:\s(\d{1,5})\sPAYLOAD:\s(\d{1,5})/gm; //1:Planned, 2:Est Max
   var pax = /PAX:\s(\d{1,2})\sPAX:\s(\d{1,2})/gm; //1:Planned, 2:Est Max
   var bags = /BAGS:\s(\d{1,3})\sBAGS:\s(\d{1,3})/gm; //1:Planned, 2:Est Max
-
+  var burn = /(BURN)\s(\d{4,5})\s(\d:\d{2})/gm //1:Quantity, 2:Time 
+  var resrv = /(RESERVE)\s(\d{4,5})\s(\d:\d{2})/gm
+  var hold = /(HOLD)\s(\d{3,5})\s(\d:\d{2})/gm
+  var altF = /(ALT)\s(\d{1,5})\s(\d:\d{2})/gm
+  var ballast = /(BALLAST)\s(\d{1,5})/gm
+  var melF = /(MEL)\s(\d{1,5})\s(\d:\d{2})/gm
+  var minF = /(MIN)\s(\d{1,5})\s(\d:\d{2})/gm
+  var taxi = /(TAXI)\s(\d{1,5})\s(\d:\d{2})/gm
+  var extra = /(EXTRA)\s(\d{1,5})\s(\d:\d{2})/gm
+  var ramp = /(RAMP)\s(\d{1,5})\s(\d:\d{2})/gm
+  fltRls.fuel = [];
+  fltRls.fuel.push(burn.exec(textContent));
+  fltRls.fuel.push(resrv.exec(textContent));
+  fltRls.fuel.push(hold.exec(textContent));
+  fltRls.fuel.push(altF.exec(textContent));
+  fltRls.fuel.push(ballast.exec(textContent));
+  fltRls.fuel.push(melF.exec(textContent));
+  fltRls.fuel.push(minF.exec(textContent));
+  fltRls.fuel.push(taxi.exec(textContent));
+  fltRls.fuel.push(extra.exec(textContent));
+  fltRls.fuel.push(ramp.exec(textContent));
+  
   var MELs = /\w{2}-\w{2}-\w{2}-\w{1,2}\s.*/gm; // Try multiple matches
   var CDLs = /\w{2}-\w{2}-\w{2}\s.*/gm; // Try multiple matches
   var NEFs = /\w{2}-\w{2}-\w{3}.\s*/gm; // Try multiple matches
@@ -65,6 +97,13 @@ function displayRelease() {
   createChild('div1', 'h1', fltRls.DEP + ' - ' + fltRls.ARR);
   createChild('div1', 'h1', "SKED DEP " + fltRls.SchedTime);
   document.getElementById('div1').style.display = 'block';
+  document.getElementById('fuel').style.display = 'block';
+  const fuelTable = document.createElement('table');
+  for (fuelLine in fltRls.fuel){
+    var row = document.createElement("tr");
+    
+  }
+
 }
 
 function displayClock() {
@@ -86,4 +125,3 @@ function createChild(parentId, childTag, innerHtml) {
   child.innerHTML = innerHtml;
   parent.appendChild(child);
 }
-
