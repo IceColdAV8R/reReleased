@@ -5,7 +5,7 @@ const CACHE_NAME = 'my-pwa-cache-v1';
 
 // Files to cache
 const FILES_TO_CACHE = [
-  'index.html',           // Caches the root (index.html)
+  '/',           // Caches the root (index.html)
   'styles.css', // Your CSS file
   'script.js'   // Your JavaScript file
 ];
