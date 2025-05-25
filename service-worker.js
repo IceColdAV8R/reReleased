@@ -8,8 +8,8 @@ const FILES_TO_CACHE = [
   '/',           // Caches the root (index.html)
   'styles.css', // Your CSS file
   'script.js',   // Your JavaScript file
-  'pdf.min.js',
-  'pdf.worker.min.js'
+  'pdfjs/pdf.min.js',
+  'pdfjs/pdf.worker.min.js'
 ];
 
 // Install event: Cache the files
