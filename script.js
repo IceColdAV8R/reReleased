@@ -41,6 +41,7 @@ async function loadPDFjs() {
       throw error;
     }
   }
+}
 
 // Load a cached PDF (e.g., sample.pdf)
 async function loadCachedPDF() {
