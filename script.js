@@ -2,6 +2,10 @@ let textContent = '';
 const fltRls = {};
 loadCachedPDF();
 
+document.addEventListener("DOMContentLoaded", function () {
+    console.log(pdfjsLib); // Check if it is defined
+});
+
 // Configure PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
 
