@@ -3,7 +3,7 @@ const fltRls = {};
 loadCachedPDF();
 
 // Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.js';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
