@@ -1,6 +1,9 @@
 let textContent = '';
 const fltRls = {};
 
+// Configure PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js')
@@ -16,6 +19,18 @@ if ('serviceWorker' in navigator) {
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
 displayClock();
 setInterval(displayClock, 1000);
+
+// Function to extract text from a PDF
+async function extractTextFromPDF(pdfDoc) {
+  let fullText = '';
+  for (let i = 1; i <= pdfDoc.numPages; i++) {
+    const page = await pdfDoc.getPage(i);
+    const textContent = await page.getTextContent();
+    const pageText = textContent.items.map(item => item.str).join(' ');
+    fullText += pageText + ' ';
+  }
+  return fullText.trim();
+}
 
 function loadRelease() {
   document.getElementById('inputText').style.display = 'none';
