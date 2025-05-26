@@ -86,7 +86,7 @@ async function loadCachedPDF() {
       extractedText = await extractTextFromPDF(pdfDoc);
       console.log('Extracted Text from Cached PDF:', extractedText);
     }
-    alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
+    //alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
   } catch (error) {
     console.error('Error loading PDF:', error);
     alert('Failed to load PDF. Check console for details.');
