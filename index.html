@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="manifest" href="manifest.json">
-  <!-- iOS-specific meta tags -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">  
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  </head>
-  <body>
-    <h1 id="clock">TIME</h1>
-    <button id="submitButton" onclick="loadRelease()">Submit</button>
-    <textarea id="inputText"></textarea>
-    <div id="titleDiv"></div>
-    <div id="div1" style="display:none;"></div>
-    <div id="fuel" style="display:none;"></div>
-    
-    <script src="script.js"></script>
-    <script src="pdfjs/pdf.min.js"></script>
-    
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline PDF Viewer PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <script src="pdfjs/pdf.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    #inputText, #submitButton { display: none; }
+    #div1, #fuel { display: none; margin: 20px; }
+    table { border-collapse: collapse; margin: 0 auto; }
+    td { border: 1px solid #000; padding: 8px; }
+  </style>
+</head>
+<body>
+  <div id="titleDiv"></div>
+  <div id="div1"></div>
+  <div id="fuel"></div>
+  <div id="clock"></div>
+  <textarea id="inputText"></textarea>
+  <button id="submitButton">Submit</button>
+  <script src="script.js"></script>
+</body>
 </html>
