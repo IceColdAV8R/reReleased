@@ -161,7 +161,7 @@ function displayRelease() {
   console.log('Flight Release Data:', fltRls);
   createChild('titleDiv', 'h1', `RPA ${fltRls.ID || 'N/A'}`);
   createChild('div1', 'h1', fltRls.rlsNum || 'N/A');
-  createChild('div1', 'h1', `${fltRls.aircraft[1]} - - - ${fltRls.aircraft[2]}`);
+  //createChild('div1', 'h1', `${fltRls.aircraft[1]} - - - ${fltRls.aircraft[2]}`);
   createChild('div1', 'h1', `${fltRls.DEP || 'N/A'} - ${fltRls.ARR || 'N/A'}`);
   createChild('div1', 'h1', `SKED DEP ${fltRls.SchedTime || 'N/A'}`);
 
