@@ -1,6 +1,6 @@
 let textContent = '';
 const fltRls = {};
-
+loadCachedPDF();
 
 // Configure PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
@@ -17,7 +17,21 @@ if ('serviceWorker' in navigator) {
  });
 }
 
-
+// Load a cached PDF (e.g., sample.pdf)
+async function loadCachedPDF() {
+  try {
+    const response = await fetch('sampleRelease.pdf');
+    const data = await response.arrayBuffer();
+    const typedArray = new Uint8Array(data);
+    const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+    const text = await extractTextFromPDF(pdfDoc);
+    console.log('Extracted Text from Cached PDF:', text);
+    alert('Text extracted from cached PDF! Check the console for the full text.');
+  } catch (error) {
+    console.error('Error loading cached PDF:', error);
+    alert('Failed to load cached PDF.');
+  }
+}
 
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
 displayClock();
