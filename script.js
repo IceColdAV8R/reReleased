@@ -21,10 +21,33 @@ if ('serviceWorker' in navigator) {
  });
 }
 
+async function loadPDFjs() {
+  if (typeof pdfjsLib === 'undefined') {
+    console.error('pdfjsLib is not defined. Ensure pdf.min.js is loaded.');
+    try {
+      // Wait for the pdf.js script to load
+      await new Promise((resolve, reject) => {
+        const script = document.querySelector('script[src="pdfjs/pdf.min.js"]');
+        if (script) {
+          script.onload = resolve;
+          script.onerror = () => reject(new Error('Failed to load pdf.min.js'));
+        } else {
+          reject(new Error('pdf.min.js script tag not found in HTML'));
+        }
+      });
+    } catch (error) {
+      console.error(error.message);
+      alert('Error: PDF.js library failed to load. Check console for details.');
+      throw error;
+    }
+  }
+
 // Load a cached PDF (e.g., sample.pdf)
 async function loadCachedPDF() {
   try {
+    await loadPDFjs();
     const response = await fetch('sampleRelease.pdf');
+    if (!response.ok) throw new Error('Failed to fetch cached PDF');
     const data = await response.arrayBuffer();
     const typedArray = new Uint8Array(data);
     const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
@@ -33,7 +56,7 @@ async function loadCachedPDF() {
     alert('Text extracted from cached PDF! Check the console for the full text.');
   } catch (error) {
     console.error('Error loading cached PDF:', error);
-    alert('Failed to load cached PDF.');
+    alert('Failed to load cached PDF. Check console for details.');
   }
 }
 
