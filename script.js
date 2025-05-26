@@ -1,6 +1,7 @@
 let textContent = '';
 const fltRls = {};
 
+
 // Configure PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
 
@@ -13,8 +14,10 @@ if ('serviceWorker' in navigator) {
       .catch(error => {
         console.error('Service Worker registration failed:', error);
       });
-  });
+ });
 }
+
+
 
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
 displayClock();
