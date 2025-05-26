@@ -181,7 +181,7 @@ function createChild(parentId, childTag, innerHtml) {
     return null;
   }
   const child = document.createElement(childTag);
-    
   child.innerHTML = innerHtml;
   parent.appendChild(child);
 }
+//Newest JS
