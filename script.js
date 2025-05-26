@@ -1,23 +1,42 @@
-let extractedText = ''; // Renamed to avoid conflict with DOM textContent
+let extractedText = '';
+let selectedFile = null; // Track user-selected PDF
 const fltRls = {};
 
 // Wait for DOM to load and check pdfjsLib
 document.addEventListener("DOMContentLoaded", function () {
-  console.log('pdfjsLib:', typeof pdfjsLib); // Debug: Check if pdfjsLib is defined
+  console.log('pdfjsLib:', typeof pdfjsLib);
   if (typeof pdfjsLib === 'undefined') {
     console.error('pdfjsLib is not defined. Ensure pdf.min.js is loaded in index.html.');
     alert('Error: PDF.js library not loaded. Check console for details.');
+  } else {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
   }
-  // Load cached PDF after DOM is ready
+  // Set up file input listener
+  const pdfInput = document.getElementById('pdfInput');
+  if (pdfInput) {
+    pdfInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file && file.type === 'application/pdf') {
+        try {
+          selectedFile = file;
+          const arrayBuffer = await file.arrayBuffer();
+          const typedArray = new Uint8Array(arrayBuffer);
+          const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+          extractedText = await extractTextFromPDF(pdfDoc);
+          console.log('Extracted Text from Selected PDF:', extractedText);
+          alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
+        } catch (error) {
+          console.error('Error processing selected PDF:', error);
+          alert('Failed to process PDF. Check console for details.');
+        }
+      } else {
+        alert('Please select a valid PDF file.');
+      }
+    });
+  }
+  // Load cached PDF by default
   loadCachedPDF();
 });
-
-// Configure PDF.js worker
-if (typeof pdfjsLib !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
-} else {
-  console.error('Cannot configure PDF.js worker: pdfjsLib is not defined.');
-}
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
@@ -32,29 +51,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Function to ensure pdfjsLib is loaded
-async function loadPDFjs() {
-  if (typeof pdfjsLib === 'undefined') {
-    console.error('pdfjsLib is not defined. Ensure pdf.min.js is loaded.');
-    try {
-      await new Promise((resolve, reject) => {
-        const script = document.querySelector('script[src="pdfjs/pdf.min.js"]');
-        if (script) {
-          script.onload = resolve;
-          script.onerror = () => reject(new Error('Failed to load pdf.min.js'));
-        } else {
-          reject(new Error('pdf.min.js script tag not found in HTML'));
-        }
-      });
-    } catch (error) {
-      console.error(error.message);
-      alert('Error: PDF.js library failed to load. Check console for details.');
-      throw error;
-    }
-  }
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs/pdf.worker.min.js';
-}
-
 // Function to extract text from a PDF
 async function extractTextFromPDF(pdfDoc) {
   let fullText = '';
@@ -67,29 +63,45 @@ async function extractTextFromPDF(pdfDoc) {
   return fullText.trim();
 }
 
-// Load a cached PDF (e.g., sampleRelease.pdf)
+// Load a cached PDF (sampleRelease.pdf) unless a file is selected
 async function loadCachedPDF() {
   try {
-    await loadPDFjs();
-    const response = await fetch('sampleRelease.pdf');
-    if (!response.ok) throw new Error('Failed to fetch cached PDF');
-    const data = await response.arrayBuffer();
-    const typedArray = new Uint8Array(data);
-    const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
-    extractedText = await extractTextFromPDF(pdfDoc);
-    console.log('Extracted Text from Cached PDF:', extractedText);
-    loadRelease();
+    if (typeof pdfjsLib === 'undefined') {
+      throw new Error('pdfjsLib is not defined. Ensure pdf.min.js is loaded.');
+    }
+    if (selectedFile) {
+      // User has selected a file, use it instead
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      const typedArray = new Uint8Array(arrayBuffer);
+      const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+      extractedText = await extractTextFromPDF(pdfDoc);
+      console.log('Extracted Text from Selected PDF:', extractedText);
+    } else {
+      // Load cached sampleRelease.pdf
+      const response = await fetch('sampleRelease.pdf');
+      if (!response.ok) throw new Error('Failed to fetch cached PDF');
+      const data = await response.arrayBuffer();
+      const typedArray = new Uint8Array(data);
+      const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+      extractedText = await extractTextFromPDF(pdfDoc);
+      console.log('Extracted Text from Cached PDF:', extractedText);
+    }
+    alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
   } catch (error) {
-    console.error('Error loading cached PDF:', error);
-    alert('Failed to load cached PDF. Check console for details.');
+    console.error('Error loading PDF:', error);
+    alert('Failed to load PDF. Check console for details.');
   }
 }
 
 function loadRelease() {
+  if (!extractedText) {
+    alert('No PDF loaded. Please select a PDF or load the cached PDF.');
+    return;
+  }
   const textarea = document.getElementById('inputText');
   if (textarea) {
     textarea.style.display = 'none';
-    textarea.value = extractedText; // Store text in textarea if present
+    textarea.value = extractedText;
   }
   const submitButton = document.getElementById('submitButton');
   if (submitButton) {
@@ -149,7 +161,7 @@ function displayRelease() {
   console.log('Flight Release Data:', fltRls);
   createChild('titleDiv', 'h1', `RPA ${fltRls.ID || 'N/A'}`);
   createChild('div1', 'h1', fltRls.rlsNum || 'N/A');
-  //createChild('div1', 'h1', `${fltRls.aircraft[1]} - - - ${fltRls.aircraft[2]}`);
+  createChild('div1', 'h1', `${fltRls.aircraft[1]} - - - ${fltRls.aircraft[2]}`);
   createChild('div1', 'h1', `${fltRls.DEP || 'N/A'} - ${fltRls.ARR || 'N/A'}`);
   createChild('div1', 'h1', `SKED DEP ${fltRls.SchedTime || 'N/A'}`);
 
