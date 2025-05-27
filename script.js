@@ -98,15 +98,6 @@ function loadRelease() {
     alert('No PDF loaded. Please select a PDF or load the cached PDF.');
     return;
   }
-  const textarea = document.getElementById('inputText');
-  if (textarea) {
-    textarea.style.display = 'none';
-    textarea.value = extractedText;
-  }
-  const submitButton = document.getElementById('submitButton');
-  if (submitButton) {
-    submitButton.style.display = 'none';
-  }
 
   // Parse flight information
   const flightInformationRgx = /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm;
