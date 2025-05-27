@@ -15,14 +15,15 @@
     button { margin: 10px; padding: 8px 16px; }
   </style>
 </head>
-<body>
+<body>  
+  <input type="file" id="pdfInput" accept="application/pdf">
+  <button onclick="loadCachedPDF()">Load Cached PDF</button>
+  <button onclick="loadRelease()">Process PDF</button>
   <div id="titleDiv"></div>
   <div id="div1"></div>
   <div id="fuel"></div>
   <div id="clock"></div>
-  <input type="file" id="pdfInput" accept="application/pdf">
-  <button onclick="loadCachedPDF()">Load Cached PDF</button>
-  <button onclick="loadRelease()">Process PDF</button>
+
   <script src="script.js"></script>
 </body>
 </html>
