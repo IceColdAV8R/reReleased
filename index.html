@@ -7,22 +7,78 @@
   <link rel="manifest" href="manifest.json">
   <script src="pdfjs/pdf.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; }
-    #inputText, #submitButton { display: none; }
-    #div1, #fuel { display: none; margin: 20px; }
-    table { border-collapse: collapse; margin: 0 auto; }
-    td { border: 1px solid #000; padding: 8px; }
     button { margin: 10px; padding: 8px 16px; }
   </style>
 </head>
 <body>  
+  <h1 id="clock">TIME</h1>
   <input type="file" id="pdfInput" accept="application/pdf">
   <button onclick="loadCachedPDF()">Load Cached PDF</button>
   <button onclick="loadRelease()">Process PDF</button>
-  <div id="titleDiv"></div>
-  <div id="div1"></div>
-  <div id="fuel"></div>
-  <div id="clock"></div>
+   <div id="div1" style="display:none;">
+    <h1>3456</h1>
+    <h2>Release #3</h2>
+    <h2>KBOS - KLGA</h2>
+   
+    <table id="crew" >
+    </table>
+    <br>
+    <table id="fuel" >
+      <tr>
+        <th colspan="3">Fuel</th>
+      </tr>
+      <tr>
+        <td>BURN</td>
+        <td id="burnQ"></td>
+        <td id="burnT"></td>
+      </tr>
+      <tr>
+        <td>RESERVE</td>
+        <td id="reserveQ"></td>
+        <td id="reserveT"></td>
+      </tr>
+      <tr>
+        <td>HOLD</td>
+        <td id="holdQ"></td>
+        <td id="holdT"></td>
+      </tr>
+      <tr>
+        <td>ALT</td>
+        <td id="altQ"></td>
+        <td id="altT"></td>
+      </tr>
+      <tr>
+        <td>BALLAST</td>
+        <td id="ballastQ"></td>
+        <td id="ballastT"></td>
+      </tr>
+      <tr>
+        <td>MEL</td>
+        <td id="melQ"></td>
+        <td id="melT"></td>
+      </tr>
+      <tr>
+        <td>MIN</td>
+        <td id="minQ"></td>
+        <td id="minT"></td>
+      </tr>
+      <tr>
+        <td>TAXI</td>
+        <td id="taxiQ"></td>
+        <td id="taxiT"></td>
+      </tr>
+      <tr>
+        <td>EXTRA</td>
+        <td id="extraQ"></td>
+        <td id="extraT"></td>
+      </tr>
+      <tr>
+        <td>RAMP</td>
+        <td id="rampQ"></td>
+        <td id="rampT"></td>
+      </tr>
+    </table>
+    </div>
 
   <script src="script.js"></script>
 </body>
