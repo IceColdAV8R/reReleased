@@ -55,9 +55,47 @@ async function extractTextFromPDF(pdfDoc) {
   for (let i = 1; i <= pdfDoc.numPages; i++) {
     const page = await pdfDoc.getPage(i);
     const textContent = await page.getTextContent();
-    const pageText = textContent.items.map(item => item.str).join(' ');
-    fullText += pageText + ' ';
+    
+    // Sort items by y-position (top-to-bottom, PDF coordinates are bottom-up)
+    const sortedItems = textContent.items.sort((a, b) => {
+      const aY = a.transform[5]; // Y-coordinate (PDF uses bottom-left origin)
+      const bY = b.transform[5];
+      return bY - aY; // Sort top to bottom
+    });
+
+    let currentLine = '';
+    let lastY = null;
+    let lineThreshold = 2; // Adjust based on font size or line spacing (in PDF units)
+
+    for (const item of sortedItems) {
+      const text = item.str.trim();
+      const yPos = item.transform[5]; // Y-coordinate
+      const height = item.height; // Font height for line spacing estimate
+
+      // Use height to set a dynamic threshold for line breaks
+      lineThreshold = Math.max(lineThreshold, height * 1.2); // 1.2x height as threshold
+
+      // Check if we're on a new line (significant change in y-position)
+      if (lastY !== null && Math.abs(lastY - yPos) > lineThreshold) {
+        // Append the completed line to fullText with a newline
+        if (currentLine) {
+          fullText += currentLine + '\n';
+        }
+        currentLine = text; // Start new line
+      } else {
+        // Same line, append text with a space if needed
+        currentLine += (currentLine && text ? ' ' : '') + text;
+      }
+
+      lastY = yPos;
+    }
+
+    // Append the last line of the page
+    if (currentLine) {
+      fullText += currentLine + '\n';
+    }
   }
+
   return fullText.trim();
 }
 
