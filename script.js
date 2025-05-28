@@ -109,7 +109,7 @@ function loadRelease() {
   var flightInformationRgx =
     /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm;
   //1:Flight ID, 2:DEP, 3:ARR, 4:ETE
-  matchBox = flightInformationRgx.exec(textContent);
+  matchBox = flightInformationRgx.exec(extractedText);
   fltRls.ID = matchBox[1];
   fltRls.DEP = matchBox[2];
   fltRls.ARR = matchBox[3];
@@ -118,7 +118,7 @@ function loadRelease() {
   var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
   fltRls.Crew = [];
   while (loopHelp) {
-    matchBox = crewRgx.exec(textContent);
+    matchBox = crewRgx.exec(extractedText);
     if (matchBox != null) {
       fltRls.Crew.push(matchBox);
     } else {
@@ -127,21 +127,21 @@ function loadRelease() {
   }
 
   var rlsNum = /RELEASE\sNO.\s\d{1,2}/gm;
-  fltRls.rlsNum = rlsNum.exec(textContent);
+  fltRls.rlsNum = rlsNum.exec(extractedText);
   var aircraft = /(N\w{5})\s(E170.*)/gm; //1:Tail, 2:Type
-  fltRls.aircraft = aircraft.exec(textContent);
+  fltRls.aircraft = aircraft.exec(extractedText);
   var authDep = /(?<=AUTHORIZED DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
-  matchBox = authDep.exec(textContent);
+  matchBox = authDep.exec(extractedText);
   fltRls.AuthDep = [];
   fltRls.AuthDep.push(matchBox[1]);
   fltRls.AuthDep.push(matchBox[2]);
   var skedDep = /(?<=SKED DEP DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
-  matchBox = skedDep.exec(textContent);
+  matchBox = skedDep.exec(extractedText);
   fltRls.SkedDep = [];
   fltRls.SkedDep.push(matchBox[1]);
   fltRls.SkedDep.push(matchBox[2]);
   var skedArr = /(?<=SKED ARR DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
-  matchBox = skedArr.exec(textContent);
+  matchBox = skedArr.exec(extractedText);
   fltRls.SkedArr = [];
   fltRls.SkedArr.push(matchBox[1]);
   fltRls.SkedArr.push(matchBox[2]);
@@ -159,16 +159,16 @@ function loadRelease() {
   var extra = /(EXTRA)\s(\d{1,5})\s(\d:\d{2})/gm;
   var ramp = /(RAMP)\s(\d{1,5})\s(\d:\d{2})/gm;
   fltRls.fuel = [];
-  fltRls.fuel.push(burn.exec(textContent));
-  fltRls.fuel.push(resrv.exec(textContent));
-  fltRls.fuel.push(hold.exec(textContent));
-  fltRls.fuel.push(altF.exec(textContent));
-  fltRls.fuel.push(ballast.exec(textContent));
-  fltRls.fuel.push(melF.exec(textContent));
-  fltRls.fuel.push(minF.exec(textContent));
-  fltRls.fuel.push(taxi.exec(textContent));
-  fltRls.fuel.push(extra.exec(textContent));
-  fltRls.fuel.push(ramp.exec(textContent));
+  fltRls.fuel.push(burn.exec(extractedText));
+  fltRls.fuel.push(resrv.exec(extractedText));
+  fltRls.fuel.push(hold.exec(extractedText));
+  fltRls.fuel.push(altF.exec(extractedText));
+  fltRls.fuel.push(ballast.exec(extractedText));
+  fltRls.fuel.push(melF.exec(extractedText));
+  fltRls.fuel.push(minF.exec(extractedText));
+  fltRls.fuel.push(taxi.exec(extractedText));
+  fltRls.fuel.push(extra.exec(extractedText));
+  fltRls.fuel.push(ramp.exec(extractedText));
 
   var MELs = /\w{2}-\w{2}-\w{2}-\w{1,2}\s.*/gm; // Try multiple matches
   var CDLs = /\w{2}-\w{2}-\w{2}\s.*/gm; // Try multiple matches
