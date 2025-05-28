@@ -216,10 +216,8 @@ function displayClock() {
   const hours = String(now.getUTCHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
   const hoursL = String(now.getHours()).padStart(2, '0');
-  const clock = document.getElementById('clock');
-  if (clock) {
-    clock.innerHTML = `${hours}${minutes}Z / ${hoursL}${minutes}L`;
-  }
+  document.getElementById('clock').innerHTML =
+    hours + minutes + 'Z   /   ' + hoursL + minutes + 'L';
 }
 setInterval(displayClock, 1000);
 
