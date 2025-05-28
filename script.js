@@ -34,8 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  // Load cached PDF by default
-  loadCachedPDF();
+
 });
 
 // Service worker registration
