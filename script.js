@@ -103,8 +103,8 @@ function loadRelease() {
   //document.getElementById('submitButton').style.display = 'none';
   var matchBox;
   var loopHelp = true;
-  const textarea = document.getElementById('inputText');
-  textarea.value = textContent = textarea.value; // Store text in variable
+  //const textarea = document.getElementById('inputText');
+  //textarea.value = textContent = textarea.value; // Store text in variable
 
   var flightInformationRgx =
     /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm;
