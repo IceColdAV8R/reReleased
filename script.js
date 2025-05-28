@@ -133,7 +133,7 @@ function loadRelease() {
   fltRls.AuthDep.push(matchBox[1]);
   fltRls.AuthDep.push(matchBox[2]);
   var skedDep = /(?<=SKED DEP DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time
-  console.log(extractedText);
+  debugger;
   matchBox = skedDep.exec(extractedText);
   fltRls.SkedDep = [];
   console.log(matchBox)
