@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const typedArray = new Uint8Array(arrayBuffer);
           const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
           extractedText = await extractTextFromPDF(pdfDoc);
-          console.log('Extracted Text from Selected PDF:', extractedText);
           //alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
         } catch (error) {
           console.error('Error processing selected PDF:', error);
