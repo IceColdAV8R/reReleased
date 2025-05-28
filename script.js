@@ -136,6 +136,7 @@ function loadRelease() {
   var skedDep = /(?<=SKED DEP DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
   matchBox = skedDep.exec(extractedText);
   fltRls.SkedDep = [];
+  console.log(matchBox)
   fltRls.SkedDep.push(matchBox[1]);
   fltRls.SkedDep.push(matchBox[2]);
   var skedArr = /(?<=SKED ARR DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
