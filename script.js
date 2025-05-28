@@ -99,76 +99,115 @@ function loadRelease() {
     return;
   }
 
-  // Parse flight information
-  const flightInformationRgx = /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm;
-  let match = flightInformationRgx.exec(extractedText);
-  if (match) {
-    fltRls.ID = match[1];
-    fltRls.DEP = match[2];
-    fltRls.ARR = match[3];
-    fltRls.ETE = match[4];
-  }
+   //document.getElementById('inputText').style.display = 'none';
+  //document.getElementById('submitButton').style.display = 'none';
+  var matchBox;
+  var loopHelp = true;
+  const textarea = document.getElementById('inputText');
+  textarea.value = textContent = textarea.value; // Store text in variable
 
-  // Parse crew
-  const crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
+  var flightInformationRgx =
+    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm;
+  //1:Flight ID, 2:DEP, 3:ARR, 4:ETE
+  matchBox = flightInformationRgx.exec(textContent);
+  fltRls.ID = matchBox[1];
+  fltRls.DEP = matchBox[2];
+  fltRls.ARR = matchBox[3];
+  fltRls.ETE = matchBox[4];
+
+  var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
   fltRls.Crew = [];
-  let crewMatch;
-  while ((crewMatch = crewRgx.exec(extractedText)) !== null) {
-    fltRls.Crew.push(crewMatch[0]);
+  while (loopHelp) {
+    matchBox = crewRgx.exec(textContent);
+    if (matchBox != null) {
+      fltRls.Crew.push(matchBox);
+    } else {
+      loopHelp = false;
+    }
   }
 
-  // Parse other fields
-  const rlsNum = /RELEASE\sNO.\s\d{1,2}/gm;
-  fltRls.rlsNum = rlsNum.exec(extractedText)?.[0] || 'N/A';
-  const aircraft = /(N\w{5})\s(E170.*)/gm;
-  fltRls.aircraft = aircraft.exec(extractedText) || ['N/A', 'N/A'];
-  const authDep = /(?<=AUTHORIZED DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm;
-  match = authDep.exec(extractedText);
-  fltRls.SchedDate = match ? match[1] : 'N/A';
-  fltRls.SchedTime = match ? match[2] : 'N/A';
+  var rlsNum = /RELEASE\sNO.\s\d{1,2}/gm;
+  fltRls.rlsNum = rlsNum.exec(textContent);
+  var aircraft = /(N\w{5})\s(E170.*)/gm; //1:Tail, 2:Type
+  fltRls.aircraft = aircraft.exec(textContent);
+  var authDep = /(?<=AUTHORIZED DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
+  matchBox = authDep.exec(textContent);
+  fltRls.AuthDep = [];
+  fltRls.AuthDep.push(matchBox[1]);
+  fltRls.AuthDep.push(matchBox[2]);
+  var skedDep = /(?<=SKED DEP DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
+  matchBox = skedDep.exec(textContent);
+  fltRls.SkedDep = [];
+  fltRls.SkedDep.push(matchBox[1]);
+  fltRls.SkedDep.push(matchBox[2]);
+  var skedArr = /(?<=SKED ARR DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
+  matchBox = skedArr.exec(textContent);
+  fltRls.SkedArr = [];
+  fltRls.SkedArr.push(matchBox[1]);
+  fltRls.SkedArr.push(matchBox[2]);
+  var payload = /PAYLOAD:\s(\d{1,5})\sPAYLOAD:\s(\d{1,5})/gm; //1:Planned, 2:Est Max
+  var pax = /PAX:\s(\d{1,2})\sPAX:\s(\d{1,2})/gm; //1:Planned, 2:Est Max
+  var bags = /BAGS:\s(\d{1,3})\sBAGS:\s(\d{1,3})/gm; //1:Planned, 2:Est Max
+  var burn = /(BURN)\s(\d{4,5})\s(\d:\d{2})/gm; //1:Quantity, 2:Time
+  var resrv = /(RESERVE)\s(\d{4,5})\s(\d:\d{2})/gm;
+  var hold = /(HOLD)\s(\d{3,5})\s(\d:\d{2})/gm;
+  var altF = /(ALT)\s(\d{1,5})\s(\d:\d{2})/gm;
+  var ballast = /(BALLAST)\s(\d{1,5})/gm;
+  var melF = /(MEL)\s(\d{1,5})\s(\d:\d{2})/gm;
+  var minF = /(MIN)\s(\d{1,5})\s(\d:\d{2})/gm;
+  var taxi = /(TAXI)\s(\d{1,5})\s(\d:\d{2})/gm;
+  var extra = /(EXTRA)\s(\d{1,5})\s(\d:\d{2})/gm;
+  var ramp = /(RAMP)\s(\d{1,5})\s(\d:\d{2})/gm;
+  fltRls.fuel = [];
+  fltRls.fuel.push(burn.exec(textContent));
+  fltRls.fuel.push(resrv.exec(textContent));
+  fltRls.fuel.push(hold.exec(textContent));
+  fltRls.fuel.push(altF.exec(textContent));
+  fltRls.fuel.push(ballast.exec(textContent));
+  fltRls.fuel.push(melF.exec(textContent));
+  fltRls.fuel.push(minF.exec(textContent));
+  fltRls.fuel.push(taxi.exec(textContent));
+  fltRls.fuel.push(extra.exec(textContent));
+  fltRls.fuel.push(ramp.exec(textContent));
 
-  // Fuel data
-  const fuelRegexes = [
-    { name: 'BURN', rgx: /(BURN)\s(\d{4,5})\s(\d:\d{2})/gm },
-    { name: 'RESERVE', rgx: /(RESERVE)\s(\d{4,5})\s(\d:\d{2})/gm },
-    { name: 'HOLD', rgx: /(HOLD)\s(\d{3,5})\s(\d:\d{2})/gm },
-    { name: 'ALT', rgx: /(ALT)\s(\d{1,5})\s(\d:\d{2})/gm },
-    { name: 'BALLAST', rgx: /(BALLAST)\s(\d{1,5})/gm },
-    { name: 'MEL', rgx: /(MEL)\s(\d{1,5})\s(\d:\d{2})/gm },
-    { name: 'MIN', rgx: /(MIN)\s(\d{1,5})\s(\d:\d{2})/gm },
-    { name: 'TAXI', rgx: /(TAXI)\s(\d{1,5})\s(\d:\d{2})/gm },
-    { name: 'EXTRA', rgx: /(EXTRA)\s(\d{1,5})\s(\d:\d{2})/gm },
-    { name: 'RAMP', rgx: /(RAMP)\s(\d{1,5})\s(\d:\d{2})/gm }
-  ];
-  fltRls.fuel = fuelRegexes.map(({ name, rgx }) => {
-    const match = rgx.exec(extractedText);
-    return match ? [name, match[2], match[3] || 'N/A'] : [name, 'N/A', 'N/A'];
-  });
+  var MELs = /\w{2}-\w{2}-\w{2}-\w{1,2}\s.*/gm; // Try multiple matches
+  var CDLs = /\w{2}-\w{2}-\w{2}\s.*/gm; // Try multiple matches
+  var NEFs = /\w{2}-\w{2}-\w{3}.\s*/gm; // Try multiple matches
+  var pages =
+    /(?:REPUBLIC AIRWAYS BRIEF PAGE \d{1,2} OF \d{2})|(?:PAGE \d{1,2} OF \d{2})/g;
 
   displayRelease();
 }
 
 function displayRelease() {
-  console.log('Flight Release Data:', fltRls);
-  createChild('titleDiv', 'h1', `RPA ${fltRls.ID || 'N/A'}`);
-  createChild('div1', 'h1', fltRls.rlsNum || 'N/A');
-  //createChild('div1', 'h1', `${fltRls.aircraft[1]} - - - ${fltRls.aircraft[2]}`);
-  createChild('div1', 'h1', `${fltRls.DEP || 'N/A'} - ${fltRls.ARR || 'N/A'}`);
-  createChild('div1', 'h1', `SKED DEP ${fltRls.SchedTime || 'N/A'}`);
+console.log(fltRls);
+  document.getElementById('div1').style.display = 'block';
+  //Fill Fuel Table
+  document.getElementById('burnQ').innerHTML = fltRls.fuel[0][2];
+  document.getElementById('burnT').innerHTML = fltRls.fuel[0][3];
+  document.getElementById('reserveQ').innerHTML = fltRls.fuel[1][2];
+  document.getElementById('reserveT').innerHTML = fltRls.fuel[1][3];
+  document.getElementById('holdQ').innerHTML = fltRls.fuel[2][2];
+  document.getElementById('holdT').innerHTML = fltRls.fuel[2][3];
+  document.getElementById('altQ').innerHTML = fltRls.fuel[3][2];
+  document.getElementById('altT').innerHTML = fltRls.fuel[3][3];
+  document.getElementById('ballastQ').innerHTML = fltRls.fuel[4][2];
+  document.getElementById('ballastT').innerHTML = 'N/A';
+  document.getElementById('melQ').innerHTML = fltRls.fuel[5][2];
+  document.getElementById('melT').innerHTML = fltRls.fuel[5][3];
+  document.getElementById('minQ').innerHTML = fltRls.fuel[6][2];
+  document.getElementById('minT').innerHTML = fltRls.fuel[6][3];
+  document.getElementById('taxiQ').innerHTML = fltRls.fuel[7][2];
+  document.getElementById('taxiT').innerHTML = fltRls.fuel[7][3];
+  document.getElementById('extraQ').innerHTML = fltRls.fuel[8][2];
+  document.getElementById('extraT').innerHTML = fltRls.fuel[8][3];
+  document.getElementById('rampQ').innerHTML = fltRls.fuel[9][2];
+  document.getElementById('rampT').innerHTML = fltRls.fuel[9][3];
 
-  const div1 = document.getElementById('div1');
-  if (div1) div1.style.display = 'block';
-
-  const fuelDiv = document.getElementById('fuel');
-  if (fuelDiv) {
-    fuelDiv.style.display = 'block';
-    const fuelTable = document.createElement('table');
-    fltRls.fuel.forEach(([name, quantity, time]) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `<td>${name}</td><td>${quantity}</td><td>${time}</td>`;
-      fuelTable.appendChild(row);
-    });
-    fuelDiv.appendChild(fuelTable);
+  for (const x of fltRls.Crew) {
+    var row = document.createElement('tr');
+    row.innerHTML = '<td>' + x + '</td>';
+    document.getElementById('crew').appendChild(row);
   }
 }
 
