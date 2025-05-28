@@ -84,7 +84,6 @@ async function loadCachedPDF() {
       const typedArray = new Uint8Array(data);
       const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
       extractedText = await extractTextFromPDF(pdfDoc);
-      console.log('Extracted Text from Cached PDF:', extractedText);
     }
     //alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
   } catch (error) {
