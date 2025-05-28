@@ -129,11 +129,12 @@ function loadRelease() {
   fltRls.aircraft = aircraft.exec(extractedText);
   var authDep = /(?<=AUTHORIZED DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time
   matchBox = authDep.exec(extractedText);
+  console.log(matchBox)
   fltRls.AuthDep = [];
   fltRls.AuthDep.push(matchBox[1]);
   fltRls.AuthDep.push(matchBox[2]);
+  console.log(fltRls)
   var skedDep = /(?<=SKED DEP DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time
-  debugger;
   matchBox = skedDep.exec(extractedText);
   fltRls.SkedDep = [];
   console.log(matchBox)
