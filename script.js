@@ -92,6 +92,7 @@ async function loadCachedPDF() {
 }
 
 function loadRelease() {
+  console.log(extractedText);
   if (!extractedText) {
     alert('No PDF loaded. Please select a PDF or load the cached PDF.');
     return;
