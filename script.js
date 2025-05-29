@@ -4,7 +4,7 @@ const fltRls = {};
 displayClock();
 // Wait for DOM to load and check pdfjsLib
 document.addEventListener("DOMContentLoaded", function () {
-  console.log('pdfjsLib:', typeof pdfjsLib);
+  //console.log('pdfjsLib:', typeof pdfjsLib);
   if (typeof pdfjsLib === 'undefined') {
     console.error('pdfjsLib is not defined. Ensure pdf.min.js is loaded in index.html.');
     alert('Error: PDF.js library not loaded. Check console for details.');
@@ -41,7 +41,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js')
       .then(registration => {
-        console.log('Service Worker registered with scope:', registration.scope);
+        //console.log('Service Worker registered with scope:', registration.scope);
       })
       .catch(error => {
         console.error('Service Worker registration failed:', error);
@@ -130,15 +130,12 @@ function loadRelease() {
   fltRls.aircraft = aircraft.exec(extractedText);
   var authDep = /(?<=AUTHORIZED DATE\/TIME:\s*)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time //works
   matchBox = authDep.exec(extractedText);
-  console.log(matchBox)
   fltRls.AuthDep = [];
   fltRls.AuthDep.push(matchBox[1]);
   fltRls.AuthDep.push(matchBox[2]);
-  console.log(fltRls)
   var skedDep = /(?<=SKED DEP DATE\/TIME:\s*)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time //works
   matchBox = skedDep.exec(extractedText);
   fltRls.SkedDep = [];
-  console.log(matchBox)
   fltRls.SkedDep.push(matchBox[1]);
   fltRls.SkedDep.push(matchBox[2]);
   var skedArr = /(?<=SKED ARR DATE\/TIME:\s*)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time //works
@@ -181,7 +178,6 @@ function loadRelease() {
 }
 
 function displayRelease() {
-console.log(fltRls);
   document.getElementById('div1').style.display = 'block';
   //Fill Fuel Table
   document.getElementById('burnQ').innerHTML = fltRls.fuel[0][2];
