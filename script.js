@@ -90,7 +90,7 @@ async function extractTextFromPDF(pdfDoc) {
       if (lastY !== null && Math.abs(lastY - yPos) > lineThreshold) {
         // Append the completed line to fullText with a newline
         if (currentLine) {
-          fullText += currentLine + \n;
+          fullText += currentLine + '\n';
         }
         currentLine = text; // Start new line
       } else {
@@ -103,7 +103,7 @@ async function extractTextFromPDF(pdfDoc) {
 
     // Append the last line of the page
     if (currentLine) {
-      fullText += currentLine + \n;
+      fullText += currentLine + '\n';
     }
   }
 
