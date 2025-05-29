@@ -105,7 +105,7 @@ function loadRelease() {
   //textarea.value = textContent = textarea.value; // Store text in variable
 
   var flightInformationRgx =
-    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm;
+    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm; //W
   //1:Flight ID, 2:DEP, 3:ARR, 4:ETE
   matchBox = flightInformationRgx.exec(extractedText);
   fltRls.ID = matchBox[1];
