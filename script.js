@@ -105,7 +105,7 @@ function loadRelease() {
   //textarea.value = textContent = textarea.value; // Store text in variable
 
   var flightInformationRgx =
-    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm; //W
+    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm; //works
   //1:Flight ID, 2:DEP, 3:ARR, 4:ETE
   matchBox = flightInformationRgx.exec(extractedText);
   fltRls.ID = matchBox[1];
@@ -113,7 +113,7 @@ function loadRelease() {
   fltRls.ARR = matchBox[3];
   fltRls.ETE = matchBox[4];
 
-  var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
+  var crewRgx = /(?:CA:|FO:|FA:)\s*\d{6}\s*(?:\w*\s?)*(?=\s*(?:CA:|FO:|FA:|FLIGHT|$))/gm; //works
   fltRls.Crew = [];
   while (loopHelp) {
     matchBox = crewRgx.exec(extractedText);
@@ -124,41 +124,41 @@ function loadRelease() {
     }
   }
 
-  var rlsNum = /RELEASE\sNO.\s\d{1,2}/gm;
+  var rlsNum = /RELEASE\sNO.\s\d{1,2}/gm; //works
   fltRls.rlsNum = rlsNum.exec(extractedText);
-  var aircraft = /(N\w{5})\s(E170.*)/gm; //1:Tail, 2:Type
+  var aircraft = /(N\w{5})\s(E170-\d{3}\w{2}(?:\/[A-Z]*)*)/gm; //1:Tail, 2:Type //works
   fltRls.aircraft = aircraft.exec(extractedText);
-  var authDep = /(?<=AUTHORIZED DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time
+  var authDep = /(?<=AUTHORIZED DATE\/TIME:\s*)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time //works
   matchBox = authDep.exec(extractedText);
   console.log(matchBox)
   fltRls.AuthDep = [];
   fltRls.AuthDep.push(matchBox[1]);
   fltRls.AuthDep.push(matchBox[2]);
   console.log(fltRls)
-  var skedDep = /(?<=SKED DEP DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time
+  var skedDep = /(?<=SKED DEP DATE\/TIME:\s*)(\d{2}\w{3}\d{2})\s(\d{4}Z)/m; //1:Date, 2:Time //works
   matchBox = skedDep.exec(extractedText);
   fltRls.SkedDep = [];
   console.log(matchBox)
   fltRls.SkedDep.push(matchBox[1]);
   fltRls.SkedDep.push(matchBox[2]);
-  var skedArr = /(?<=SKED ARR DATE\/TIME:\s)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time
+  var skedArr = /(?<=SKED ARR DATE\/TIME:\s*)(\d{2}\w{3}\d{2})\s(\d{4}Z)/gm; //1:Date, 2:Time //works
   matchBox = skedArr.exec(extractedText);
   fltRls.SkedArr = [];
   fltRls.SkedArr.push(matchBox[1]);
   fltRls.SkedArr.push(matchBox[2]);
-  var payload = /PAYLOAD:\s(\d{1,5})\sPAYLOAD:\s(\d{1,5})/gm; //1:Planned, 2:Est Max
-  var pax = /PAX:\s(\d{1,2})\sPAX:\s(\d{1,2})/gm; //1:Planned, 2:Est Max
-  var bags = /BAGS:\s(\d{1,3})\sBAGS:\s(\d{1,3})/gm; //1:Planned, 2:Est Max
-  var burn = /(BURN)\s(\d{4,5})\s(\d:\d{2})/gm; //1:Quantity, 2:Time
-  var resrv = /(RESERVE)\s(\d{4,5})\s(\d:\d{2})/gm;
-  var hold = /(HOLD)\s(\d{3,5})\s(\d:\d{2})/gm;
-  var altF = /(ALT)\s(\d{1,5})\s(\d:\d{2})/gm;
-  var ballast = /(BALLAST)\s(\d{1,5})/gm;
-  var melF = /(MEL)\s(\d{1,5})\s(\d:\d{2})/gm;
-  var minF = /(MIN)\s(\d{1,5})\s(\d:\d{2})/gm;
-  var taxi = /(TAXI)\s(\d{1,5})\s(\d:\d{2})/gm;
-  var extra = /(EXTRA)\s(\d{1,5})\s(\d:\d{2})/gm;
-  var ramp = /(RAMP)\s(\d{1,5})\s(\d:\d{2})/gm;
+  var payload = /PAYLOAD:\s*(\d{1,5})\s*PAYLOAD:\s*(\d{1,5})/gm; //1:Planned, 2:Est Max
+  var pax = /PAX:\s*(\d{1,2})\s*PAX:\s*(\d{1,2})/gm; //1:Planned, 2:Est Max
+  var bags = /BAGS:\s*(\d{1,3})\s*BAGS:\s*(\d{1,3})/gm; //1:Planned, 2:Est Max
+  var burn = /(BURN)\s*(\d{4,5})\s*(\d:\d{2})/gm; //1:Quantity, 2:Time
+  var resrv = /(RESERVE)\s*(\d{4,5})\s*(\d:\d{2})/gm;
+  var hold = /(HOLD)\s*(\d{3,5})\s*(\d:\d{2})/gm;
+  var altF = /(ALT)\s*(\d{1,5})\s*(\d:\d{2})/gm;
+  var ballast = /(BALLAST)\s*(\d{1,5})/gm;
+  var melF = /(MEL)\s*(\d{1,5})\s*(\d:\d{2})/gm;
+  var minF = /(MIN)\s*(\d{1,5})\s*(\d:\d{2})/gm;
+  var taxi = /(TAXI)\s*(\d{1,5})\s*(\d:\d{2})/gm;
+  var extra = /(EXTRA)\s*(\d{1,5})\s*(\d:\d{2})/gm;
+  var ramp = /(RAMP)\s*(\d{1,5})\s*(\d:\d{2})/gm;
   fltRls.fuel = [];
   fltRls.fuel.push(burn.exec(extractedText));
   fltRls.fuel.push(resrv.exec(extractedText));
