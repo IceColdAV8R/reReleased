@@ -1,7 +1,9 @@
 let extractedText = '';
 let selectedFile = null; // Track user-selected PDF
 const fltRls = {};
-displayClock();
+document.addEventListener("DOMContentLoaded", function() {
+    displayClock();
+});
 // Wait for DOM to load and check pdfjsLib
 document.addEventListener("DOMContentLoaded", function () {
   //console.log('pdfjsLib:', typeof pdfjsLib);
