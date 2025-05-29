@@ -169,9 +169,8 @@ function loadRelease() {
   fltRls.fuel.push(extra.exec(extractedText));
   fltRls.fuel.push(ramp.exec(extractedText));
 
-  var MELs = /\w{2}-\w{2}-\w{2}-\w{1,2}\s.*/gm; // Try multiple matches
-  var CDLs = /\w{2}-\w{2}-\w{2}\s.*/gm; // Try multiple matches
-  var NEFs = /\w{2}-\w{2}-\w{3}.\s*/gm; // Try multiple matches
+  var MELNEFs = /(\d{2}-\d{2}-\d{2,3}(?:-\d{1,2})?)\s*(\d{2}\w{3}\d{2})\s*((?:\w+\s?)*)\s*((?:[A-Z,-]+\s{0,2})*)/gm; // Try multiple matches
+  var CDLs = 
   var pages =
     /(?:REPUBLIC AIRWAYS BRIEF PAGE \d{1,2} OF \d{2})|(?:PAGE \d{1,2} OF \d{2})/g;
 
