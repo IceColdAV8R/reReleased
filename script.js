@@ -199,6 +199,9 @@ function loadRelease() {
 
 function displayRelease() {
   document.getElementById('div1').style.display = 'block';
+  document.getElementById('flightID').innerHTML= fltRls.ID;
+  document.getElementById('releaseNum').innerHTML= fltRls.rlsNum;
+  document.getElementById('fltRoute').innerHTML= fltRls.DEP + " - " + fltRls.ARR;
   //Fill Fuel Table
   document.getElementById('burnQ').innerHTML = fltRls.fuel[0][2];
   document.getElementById('burnT').innerHTML = fltRls.fuel[0][3];
