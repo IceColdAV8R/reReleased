@@ -76,7 +76,7 @@ async function extractTextFromPDF(pdfDoc) {
 
     let currentLine = '';
     let lastY = null;
-    let lineThreshold = 2; // Adjust based on font size or line spacing (in PDF units)
+    let lineThreshold = 1; // Adjust based on font size or line spacing (in PDF units)
 
     for (const item of sortedItems) {
       const text = item.str.trim();
