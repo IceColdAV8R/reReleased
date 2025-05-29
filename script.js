@@ -64,31 +64,31 @@ async function extractTextFromPDF(pdfDoc) {
 
 // Load a cached PDF (sampleRelease.pdf) unless a file is selected
 async function loadCachedPDF() {
-  try {
-    if (typeof pdfjsLib === 'undefined') {
-      throw new Error('pdfjsLib is not defined. Ensure pdf.min.js is loaded.');
+    try {
+        if (selectedFile) {
+            const arrayBuffer = await selectedFile.arrayBuffer();
+            const typedArray = new Uint8Array(arrayBuffer);
+            const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+            extractedText = await extractTextFromPDF(pdfDoc);
+            localStorage.setItem('extractedText', extractedText); // Save for offline
+        } else {
+            const cachedText = localStorage.getItem('extractedText');
+            if (cachedText) {
+                extractedText = cachedText; // Use cached text offline
+            } else {
+                const response = await fetch('/reReleased/sampleRelease.pdf');
+                if (!response.ok) throw new Error('Failed to fetch cached PDF');
+                const data = await response.arrayBuffer();
+                const typedArray = new Uint8Array(data);
+                const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
+                extractedText = await extractTextFromPDF(pdfDoc);
+                localStorage.setItem('extractedText', extractedText); // Save for offline
+            }
+        }
+    } catch (error) {
+        console.error('Error loading PDF:', error);
+        alert('Failed to load PDF. Check console for details.');
     }
-    if (selectedFile) {
-      // User has selected a file, use it instead
-      const arrayBuffer = await selectedFile.arrayBuffer();
-      const typedArray = new Uint8Array(arrayBuffer);
-      const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
-      extractedText = await extractTextFromPDF(pdfDoc);
-      console.log('Extracted Text from Selected PDF:', extractedText);
-    } else {
-      // Load cached sampleRelease.pdf
-      const response = await fetch('sampleRelease.pdf');
-      if (!response.ok) throw new Error('Failed to fetch cached PDF');
-      const data = await response.arrayBuffer();
-      const typedArray = new Uint8Array(data);
-      const pdfDoc = await pdfjsLib.getDocument(typedArray).promise;
-      extractedText = await extractTextFromPDF(pdfDoc);
-    }
-    //alert('PDF loaded successfully. Click "Process PDF" to display flight data.');
-  } catch (error) {
-    console.error('Error loading PDF:', error);
-    alert('Failed to load PDF. Check console for details.');
-  }
 }
 
 function loadRelease() {
