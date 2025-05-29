@@ -172,6 +172,26 @@ function loadRelease() {
   var MELNEFs = /(\d{2}-\d{2}-\d{2,3}(?:-\d{1,2})?)\s*(\d{2}\w{3}\d{2})\s*((?:\w+\s?)*)\s*((?:[A-Z,-]+\s{0,2})*)/gm; // Try multiple matches
   var CDLs = /(\d{2}-\d{2}-\d{2}(?:-[A-Z])?)\s*(\d{2}\w{3}\d{2})\s*((?:\w+\s?)*)\s*((?:[A-Z,-]+\s{0,2})*)/gm // might work, who knows...
 
+  loopHelp = true;
+  fltRls.MELs = [];
+  while (loopHelp) {
+    matchBox = MELNEFs.exec(extractedText);
+    if (matchBox != null) {
+      fltRls.MELs.push(matchBox);
+    } else {
+      loopHelp = false;
+    }
+  }
+  fltRls.CDLs = [];
+    loopHelp = true;
+  while (loopHelp) {
+    matchBox = CDLs.exec(extractedText);
+    if (matchBox != null) {
+      fltRls.CDLs.push(matchBox);
+    } else {
+      loopHelp = false;
+    }
+  }
   displayRelease();
 }
 
@@ -198,7 +218,7 @@ function displayRelease() {
   document.getElementById('extraT').innerHTML = fltRls.fuel[8][3];
   document.getElementById('rampQ').innerHTML = fltRls.fuel[9][2];
   document.getElementById('rampT').innerHTML = fltRls.fuel[9][3];
-
+  console.log(fltRls);
   for (const x of fltRls.Crew) {
     var row = document.createElement('tr');
     row.innerHTML = '<td>' + x + '</td>';
