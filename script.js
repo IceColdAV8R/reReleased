@@ -169,7 +169,7 @@ function loadRelease() {
   fltRls.fuel.push(extra.exec(extractedText));
   fltRls.fuel.push(ramp.exec(extractedText));
 
-  var MELNEFs = /(\d{2}-\d{2}-\d{2,3}(?:-\d{1,2})?)\s*(\d{2}\w{3}\d{2})\s*((?:\w+\s?)*)\s*((?:[A-Z,-]+\s{0,2})*)/gm; // Try multiple matches
+  var MELNEFs = /(\d{2}-\d{2}-\d{2,3}(?:-\d{1,2})?)\s*(\d{2}\w{3}\d{2})\s*((?:[A-Z0-9,#,-,\/]+\s?)*)\s*((?:[A-Z,-,\/]+\s{0,2})*)/gm; // Try multiple matches
   var CDLs = /(\d{2}-\d{2}-\d{2}(?:-[A-Z])?)\s*(\d{2}\w{3}\d{2})\s*((?:\w+\s?)*)\s*((?:[A-Z,-]+\s{0,2})*)/gm // might work, who knows...
 
   loopHelp = true;
