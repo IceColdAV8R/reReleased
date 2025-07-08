@@ -601,8 +601,10 @@ function displayClock() {
   const hoursL = String(now.getHours()).padStart(2, '0');
   document.getElementById('clock').innerHTML = hours + minutes + 'Z   /   ' + hoursL + minutes + 'L';
 }
-displayClock();
-setInterval(displayClock, 1000);
+document.addEventListener('DOMContentLoaded', () => {
+  displayClock();
+  setInterval(displayClock, 1000);
+});
 
 function showScreen(screenNumber) {
   document.querySelectorAll('.screen').forEach(screen => {
