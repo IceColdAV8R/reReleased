@@ -5,7 +5,9 @@ const fltRls = {};
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
 
 
-setScreenSpaceDimensions();
+document.addEventListener('DOMContentLoaded', () => {
+  setScreenSpaceDimensions();
+});
 function setScreenSpaceDimensions() {
   const topBox = document.getElementById('topBox');
   const navBar = document.getElementById('navBar');
