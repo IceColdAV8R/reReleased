@@ -20,15 +20,40 @@ h1, h3{
   background-color: yellow;
   width:100%;
 }
-#navBar{
-  position:fixed;
+#navBar {
+  position: fixed;
   width: 100%;
   bottom: 0;
-  left:0;
+  left: 0;
   background-color: yellow;
+  padding: 10px 0;
 }
-.navRow{
-  padding:5px;
+
+.navRow {
+  display: flex;
+  justify-content: center;
+  padding: 5px 10px;
+}
+
+.topNavRow {
+  border-bottom: 1px solid #ccc;
+}
+
+.bottomNavRow {
+  padding-left: 15px;
+  padding-right: 15px; /* Extra spacing to avoid clipping on rounded displays */
+}
+
+.navButton {
+  background-color: #ffffff;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 5px;
+  margin: 0 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
 }
 #clock, #fltNum {
   text-align: center;
