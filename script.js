@@ -1,5 +1,5 @@
 let extractedText = '';
-let textContent ='';
+var textContent ='';
 let selectedFile = null; // Track user-selected PDF
 const fltRls = {};
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
@@ -109,7 +109,7 @@ async function loadCachedPDF() {
 function loadRelease() {
   var matchBox;
   var loopHelp = true;
-textContent = extractedText
+  textContent = extractedText;
   var pageNumsRgx =
     /REPUBLIC AIRWAYS BRIEF PAGE \d\d? OF \d\d\s+PAGE \d\d? OF \d\d/g;
   textContent = textContent.replaceAll(pageNumsRgx, '');
