@@ -3,8 +3,8 @@ var textContent ='';
 let selectedFile = null; // Track user-selected PDF
 const fltRls = {};
 var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
-displayClock();
-setInterval(displayClock, 1000);
+
+
 setScreenSpaceDimensions();
 function setScreenSpaceDimensions() {
   const topBox = document.getElementById('topBox');
@@ -602,6 +602,7 @@ function displayClock() {
   document.getElementById('clock').innerHTML = hours + minutes + 'Z   /   ' + hoursL + minutes + 'L';
 }
 displayClock();
+setInterval(displayClock, 1000);
 
 function showScreen(screenNumber) {
   document.querySelectorAll('.screen').forEach(screen => {
