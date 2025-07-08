@@ -36,7 +36,7 @@ h1, h3{
 }
 
 .topNavRow {
-  border-bottom: 1px solid #ccc;
+  
 }
 
 .bottomNavRow {
@@ -46,7 +46,7 @@ h1, h3{
 
 .navButton {
   background-color: #ffffff;
-  color: #333;
+  color: black;
   border: none;
   border-radius: 8px;
   padding: 5px 5px;
