@@ -579,7 +579,8 @@ function displayRelease() {
   document.getElementById('rampT').innerHTML = fltRls.fuel[9][3];
 */
   document.getElementById('DepArr').innerHTML = fltRls.DEP + ' - ' + fltRls.ARR;
-  document.getElementById('aircraft').innerHTML = fltRls.aircraft[0];
+  document.getElementById('aircraft').innerHTML = fltRls.aircraft[1]+ " "+fltRls.aircraft[2];
+  document.getElementById('acftComments').innerHTML = fltRls.aircraft[3];
   document.getElementById('rlsNum').innerHTML = fltRls.rlsNum;
   //document.getElementById().innerHTML = ;
   document.getElementById('authOut').innerHTML = "Authorized Out: " + fltRls.AuthDep[1];
