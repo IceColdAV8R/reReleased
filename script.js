@@ -593,6 +593,7 @@ function displayRelease() {
   console.log(fltRls);
 
   setScreenSpaceDimensions();
+  showScreen(1);
 }
 
 function displayClock() {
