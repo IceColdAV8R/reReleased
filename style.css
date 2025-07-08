@@ -83,5 +83,10 @@ h1, h3{
 #crew{
   margin:auto;
   margin-top: 20px;
+  margin-bottom: 20px;
+  border-style: solid;
+}
+
+  margin-top: 20px;
 }
 
