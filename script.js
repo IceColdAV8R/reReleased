@@ -15,7 +15,7 @@ function setScreenSpaceDimensions() {
   document.getElementById('sceneSpace').style.bottom = h2;
 }
 document.addEventListener("DOMContentLoaded", function() {
-    displayClock();
+    
 });
 // Wait for DOM to load and check pdfjsLib
 document.addEventListener("DOMContentLoaded", function () {
@@ -601,6 +601,7 @@ function displayClock() {
   const hoursL = String(now.getHours()).padStart(2, '0');
   document.getElementById('clock').innerHTML = hours + minutes + 'Z   /   ' + hoursL + minutes + 'L';
 }
+displayClock();
 
 function showScreen(screenNumber) {
   document.querySelectorAll('.screen').forEach(screen => {
