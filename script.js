@@ -628,3 +628,33 @@ function createChild(parentId, childTag, innerHtml) {
   child.innerHTML = innerHtml;
   parent.appendChild(child);
 }
+
+async function forcePWAUpdate() {
+  try {
+    // Check if Service Worker is supported
+    if ('serviceWorker' in navigator) {
+      // Unregister all Service Workers
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const registration of registrations) {
+        await registration.unregister();
+      }
+      console.log('Service Workers unregistered');
+      
+      // Clear all caches
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+        console.log('Caches cleared');
+      }
+      
+      // Reload the page to fetch the latest content
+      window.location.reload(true);
+    } else {
+      console.log('Service Worker not supported in this browser');
+      // Fallback: reload the page
+      window.location.reload(true);
+    }
+  } catch (error) {
+    console.error('Error forcing PWA update:', error);
+  }
+}
