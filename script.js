@@ -2,7 +2,6 @@ let extractedText = '';
 var textContent ='';
 let selectedFile = null; // Track user-selected PDF
 const fltRls = {};
-var crewRgx = /(?<=\n)[A-Z]{2}:\s\d{6}\s(?:\w*\s?)*(?=\n)/gm;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -126,7 +125,7 @@ function loadRelease() {
   fltRls.ETE = matchBox[4];
 
   var crewRgx =
-    /(?:CA:|FO:|FA:|JS:)\s*\d{6}\s*(?:\w*\s?)*(?=\s*(?:CA:|FO:|FA:|JS:|FLIGHT|$))/gm; //works
+    /(?:CA:|FO:|FA:|JS:)\s*\d{6}\s*?(?:[a-zA-Z,\-,\.]*\s?){1,5}(?=\s*(?:CA:|FO:|FA:|JS:|FLIGHT|$))/gm; //works
   fltRls.Crew = [];
   while (loopHelp) {
     matchBox = crewRgx.exec(textContent);
