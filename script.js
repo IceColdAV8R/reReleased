@@ -126,7 +126,7 @@ function loadRelease() {
   fltRls.ETE = matchBox[4];
 
   var crewRgx =
-    /(?:CA:|FO:|FA:)\s*\d{6}\s*(?:\w*\s?)*(?=\s*(?:CA:|FO:|FA:|FLIGHT|$))/gm; //works
+    /(?:CA:|FO:|FA:|JS:)\s*\d{6}\s*(?:\w*\s?)*(?=\s*(?:CA:|FO:|FA:|JS:|FLIGHT|$))/gm; //works
   fltRls.Crew = [];
   while (loopHelp) {
     matchBox = crewRgx.exec(textContent);
