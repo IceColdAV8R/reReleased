@@ -92,6 +92,8 @@ h1, h3{
   border-style: solid;
   margin:auto;
   border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 #MELs th{
   border-style: solid;
