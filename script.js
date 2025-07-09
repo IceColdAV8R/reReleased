@@ -205,7 +205,7 @@ function loadRelease() {
       loopHelp = false;
     }
   }
-
+  
   var route = /(\d{2,4}NM)\s*((?:\w{2,6}\s)*)(?=_)/gm; //1: Distance, 2: Route
   var navLog =
     /(?<WPT>[A-Z0-9]{3,6})\s*(?<FL>\w{3})\s*(?<WDIR>\d{3})\s*(?<OAT>\w{3})\s*(?<HDG>\d{3})\s*(?<IAS>\w{3})\s*(?<LEGD>\d{3,4})\s*(?<LEGT>\d:\d{2})\s*(?<LEGF>\d{4,5})\s*(?<MRQD>\d{4,5})\s*(?<AWAY>\w{3,6})\s*(?<WSPD>\d{3})\s*(?<ISA>\w{3})\s*(?<CRS>\d{3})\s*(?<MACH>\w{3})\s*(?<TOTD>\d{3})\s*(?<TOTT>\d:\d{2})\s*(?<TOTF>\d{3,6})\s*_{6}\s_{6}\s*(?<MORA>\d{4,5})\s*(?<EDR>\d.\d{2})?\s*(?<TAS>\d{3})\s*(?<REMD>\d{3,4})\s*(?<REMT>\d:\d{2})\s*(?<REMF>\d{1,5})/gm;
@@ -220,6 +220,9 @@ function loadRelease() {
       loopHelp = false;
     }
   }
+  var rmksRegex = /REMARKS:.*?DESK\s\d{1,3}/
+  var remarks = textContent.match(rmksRegex)[0]
+  fltRls.remarks = remarks.replaceAll(/\s+/g," ")
   loadTakeoffData();
   loadNOTAMS();
   loadWeather();
