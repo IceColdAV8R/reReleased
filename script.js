@@ -13,7 +13,7 @@ function setScreenSpaceDimensions() {
   var h1 = window.getComputedStyle(topBox).height;
   var h2 = window.getComputedStyle(navBar).height;
   document.getElementById('sceneSpace').style.top = h1;
-  document.getElementById('sceneSpace').style.bottom = h2;
+  document.getElementById('sceneSpace').style.bottom = h2+5;
 }
 document.addEventListener("DOMContentLoaded", function() {
     
