@@ -668,21 +668,26 @@ function populateMELsTable() {
 
 
 
-  if (!fltRls || !fltRls.MELs || fltRls.MELs.length === 0) {
-    // Add a single row with four "None" cells
+ if (!fltRls || !fltRls.MELs || fltRls.MELs.length === 0) {
+    // Add a single row with one full-width "None" cell
     const row = table.insertRow();
-    for (let i = 0; i < 4; i++) {
-      const cell = row.insertCell();
-      cell.textContent = 'None';
-    }
+    const cell = row.insertCell();
+    cell.textContent = 'None';
+    cell.setAttribute('colspan', '3');
   } else {
-    // Add a row for each MEL, using indices 1-4
+    // Add two rows for each MEL: 3 cells (indices 1-3), then 1 cell (index 4) spanning all columns
     fltRls.MELs.forEach(mel => {
-      const row = table.insertRow();
-      for (let i = 1; i <= 4; i++) {
-        const cell = row.insertCell();
+      // First row with indices 1, 2, 3
+      const row1 = table.insertRow();
+      for (let i = 1; i <= 3; i++) {
+        const cell = row1.insertCell();
         cell.textContent = mel[i] || ''; // Use empty string if index is undefined
       }
+      // Second row with index 4, spanning 3 columns
+      const row2 = table.insertRow();
+      const cell = row2.insertCell();
+      cell.textContent = mel[4] || '';
+      cell.setAttribute('colspan', '3');
     });
   }
 }
