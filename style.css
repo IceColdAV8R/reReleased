@@ -110,3 +110,10 @@ h1, h3{
   border-collapse: collapse;
 }
 
+#remarks {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-style: solid;
+  padding:5px;
+}
+
