@@ -85,8 +85,21 @@ h1, h3{
   margin-top: 20px;
   margin-bottom: 20px;
   border-style: solid;
+  border-color: black;
 }
 
-  margin-top: 20px;
+#MELs{
+  border-style: solid;
+  margin:auto;
+  border-collapse: collapse;
+}
+#MELs th{
+  border-style: solid;
+  border-collapse: collapse;
+}
+
+#MELs td{
+    border-style: solid;
+  border-collapse: collapse;
 }
 
