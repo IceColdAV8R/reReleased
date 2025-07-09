@@ -590,6 +590,7 @@ function displayRelease() {
   document.getElementById('ETE').innerHTML = "Estimated Enroute: "+fltRls.ETE;
   document.getElementById('rampFuel').innerHTML = "Ramp Fuel: " +fltRls.fuel[9][2];
     document.getElementById('remarks').innerHTML = fltRls.remarks;
+   document.getElementById('depMETAR').innerHTML = fltRls.weather[0].metar.text;
   for (const x of fltRls.Crew) {
     var row = document.createElement('tr');
     row.innerHTML = '<td>' + x + '</td>';
