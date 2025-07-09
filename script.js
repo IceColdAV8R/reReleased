@@ -591,6 +591,7 @@ function displayRelease() {
     row.innerHTML = '<td>' + x + '</td>';
     document.getElementById('crew').appendChild(row);
   }
+  populateMELsTable();
   console.log(fltRls);
 
   setScreenSpaceDimensions();
@@ -658,3 +659,31 @@ async function forcePWAUpdate() {
     console.error('Error forcing PWA update:', error);
   }
 }
+function populateMELsTable() {
+  const table = document.getElementById('MELs');
+  if (!table) {
+    console.error('Table with ID "MELs" not found');
+    return;
+  }
+
+
+
+  if (!fltRls || !fltRls.MELs || fltRls.MELs.length === 0) {
+    // Add a single row with four "None" cells
+    const row = table.insertRow();
+    for (let i = 0; i < 4; i++) {
+      const cell = row.insertCell();
+      cell.textContent = 'None';
+    }
+  } else {
+    // Add a row for each MEL, using indices 1-4
+    fltRls.MELs.forEach(mel => {
+      const row = table.insertRow();
+      for (let i = 1; i <= 4; i++) {
+        const cell = row.insertCell();
+        cell.textContent = mel[i] || ''; // Use empty string if index is undefined
+      }
+    });
+  }
+}
+
