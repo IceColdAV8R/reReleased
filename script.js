@@ -151,7 +151,8 @@ function loadRelease() {
 	fltRls.Alt2=altsMatch[2]
 	fltRls.AltTo=altsMatch[3]
   }
-
+	var EtaRgx = /(?<=ETA\s\w{4}).*?(\w{7})\s(\w{5})/
+	fltRls.ETA = textContent.match(EtaRgx)
   var rlsNum = /RELEASE\sNO.\s\d{1,2}/gm; //works
   fltRls.rlsNum = rlsNum.exec(textContent);
   var aircraft = /(N\w{5})\s(E170-\d{3}\w{2})(.*?)(?=\s{5})/g; //1:Tail, 2:Type, 3:Tags
@@ -749,7 +750,10 @@ function displayWeather() {
       const h3 = document.createElement('h3');
       if (type === 'dep' && fltRls.AuthDep && fltRls.AuthDep[1]) {
         h3.textContent = `${icao} - ${displayName} ${fltRls.AuthDep[1]}`;
-      } else {
+      } 
+	  else if (type === 'arr' && fltRls.ETA && fltRls.ETA[2]) {
+        h3.textContent = `${icao} - ${displayName} ${fltRls.ETA[2]}`;
+      }else {
         h3.textContent = `${icao} - ${displayName}`;
       }
       airfieldDiv.appendChild(h3);
