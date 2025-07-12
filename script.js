@@ -748,7 +748,7 @@ function displayWeather() {
       // Add heading with ICAO and nature, include departure time for 'dep'
       const h3 = document.createElement('h3');
       if (type === 'dep' && fltRls.AuthDep && fltRls.AuthDep[1]) {
-        h3.textContent = `${icao} - ${displayName} (${fltRls.AuthDep[1]}Z)`;
+        h3.textContent = `${icao} - ${displayName} ${fltRls.AuthDep[1]}`;
       } else {
         h3.textContent = `${icao} - ${displayName}`;
       }
