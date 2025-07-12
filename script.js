@@ -109,6 +109,7 @@ async function loadCachedPDF() {
 
 function loadRelease() {
   var matchBox;
+  var match;
   var loopHelp = true;
   textContent = extractedText;
   var pageNumsRgx =
@@ -116,13 +117,14 @@ function loadRelease() {
   textContent = textContent.replaceAll(pageNumsRgx, '');
 
   var flightInformationRgx =
-    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/gm; //works
+    /FLIGHT\s(\d{4})\/\/([A-Z]{4})-([A-Z]{4})\/\/ETE\s(\d{2}:\d{2})/; //works
   //1:Flight ID, 2:DEP, 3:ARR, 4:ETE
-  matchBox = flightInformationRgx.exec(textContent);
-  fltRls.ID = matchBox[1];
-  fltRls.DEP = matchBox[2];
-  fltRls.ARR = matchBox[3];
-  fltRls.ETE = matchBox[4];
+  match = textContent.match(flightInformationRgx);
+  fltRls.ID = match[1];
+  fltRls.DEP = match[2];
+  fltRls.ARR = match[3];
+  fltRls.ETE = match[4];
+  
 
   var crewRgx =
     /(?:CA:|FO:|FA:|JS:)\s*\d{6}\s*?(?:[a-zA-Z,\-,\.]*\s?){1,5}(?=\s*(?:CA:|FO:|FA:|JS:|FLIGHT|$))/gm; //works
@@ -134,6 +136,20 @@ function loadRelease() {
     } else {
       loopHelp = false;
     }
+  }
+  
+  	fltRls.Alt1=null
+	fltRls.Alt2=null
+	fltRls.AltTo=null
+  var airportsRgx = /(?<=SPEEDS).*?(?=-)/;
+  var airportsBlock = textContent.match(airportsRgx)[0].trim();
+  var altsRgx = /^(?:\s{4}|(\w{4}))(?:\s{2})?(?:\s{4}|(\w{4}))?(?:\s{2})?(?:\s{4}|(\w{4}))?/
+  if (airportsBlock.length > 10){
+	var alts = airportsBlock.slice(10,airportsBlock.length).trim();
+	var altsMatch = alts.match(altsRgx)
+	fltRls.Alt1=altsMatch[1]
+	fltRls.Alt2=altsMatch[2]
+	fltRls.AltTo=altsMatch[3]
   }
 
   var rlsNum = /RELEASE\sNO.\s\d{1,2}/gm; //works
@@ -391,9 +407,18 @@ function loadNOTAMS() {
 }
 
 function loadWeather() {
-  const weather = [];
-  weather.push(getWeather(fltRls.DEP));
-  weather.push(getWeather(fltRls.ARR));
+  const weather = {};
+  weather.dep = getWeather(fltRls.DEP);
+  weather.arr = getWeather(fltRls.ARR);
+  if (fltRls.Alt1){
+	  weather.alt1 = getWeather(fltRls.Alt1)
+  }
+  if (fltRls.Alt2){
+	  weather.alt2 = getWeather(fltRls.Alt2)
+  }
+  if (fltRls.Alt3){
+	  weather.altTo = getWeather(fltRls.AltTo)
+  }
   fltRls.weather = weather;
 }
 
@@ -589,8 +614,8 @@ function displayRelease() {
   document.getElementById('authOut').innerHTML = "Authorized Out: " + fltRls.AuthDep[1];
   document.getElementById('ETE').innerHTML = "Estimated Enroute: "+fltRls.ETE;
   document.getElementById('rampFuel').innerHTML = "Ramp Fuel: " +fltRls.fuel[9][2];
-    document.getElementById('remarks').innerHTML = fltRls.remarks;
-   document.getElementById('depMETAR').innerHTML = fltRls.weather[0].metar.text;
+  document.getElementById('remarks').innerHTML = fltRls.remarks;
+   displayWeather()
   for (const x of fltRls.Crew) {
     var row = document.createElement('tr');
     row.innerHTML = '<td>' + x + '</td>';
@@ -696,4 +721,69 @@ function populateMELsTable() {
     });
   }
 }
+function displayWeather() {
+  const weatherDiv = document.getElementById('weather');
+  // Clear any existing content
+  weatherDiv.innerHTML = '';
 
+  const airfieldTypes = ['dep', 'arr', 'alt1', 'alt2', 'altTo'];
+  const typeNames = {
+    dep: 'Departure',
+    arr: 'Arrival',
+    alt1: '1st Alternate',
+    alt2: '2nd Alternate',
+    altTo: 'Takeoff Alternate'
+  };
+
+  for (const type of airfieldTypes) {
+    if (fltRls.weather[type]) {
+      const airfield = fltRls.weather[type];
+      const displayName = typeNames[type];
+      const icao = airfield.name;
+
+      // Create a div for each airfield
+      const airfieldDiv = document.createElement('div');
+      airfieldDiv.className = 'airfield-weather';
+
+      // Add heading with ICAO and nature
+      const h3 = document.createElement('h3');
+      h3.textContent = `${icao} - ${displayName}`;
+      airfieldDiv.appendChild(h3);
+
+      // Add METAR information
+      if (airfield.metar && airfield.metar.text) {
+        const metarP = document.createElement('p');
+        const metarCode = document.createElement('code');
+        metarCode.textContent = airfield.metar.text;
+        metarP.appendChild(metarCode);
+        airfieldDiv.appendChild(metarP);
+      }
+
+      // Add TAF information
+      if (airfield.taf && airfield.taf.text) {
+        const tafP = document.createElement('p');
+        const tafCode = document.createElement('code');
+        tafCode.textContent = airfield.taf.text;
+        tafP.appendChild(tafCode);
+        airfieldDiv.appendChild(tafP);
+
+        // Add TAF sub forecasts if they exist
+        if (airfield.taf.subs && airfield.taf.subs.length > 0) {
+          const subsDiv = document.createElement('div');
+          subsDiv.className = 'taf-subs';
+          airfield.taf.subs.forEach((sub) => {
+            const subP = document.createElement('p');
+            const subCode = document.createElement('code');
+            subCode.textContent = sub.text;
+            subP.appendChild(subCode);
+            subsDiv.appendChild(subP);
+          });
+          airfieldDiv.appendChild(subsDiv);
+        }
+      }
+
+      // Append the airfield div to the weather div
+      weatherDiv.appendChild(airfieldDiv);
+    }
+  }
+}
