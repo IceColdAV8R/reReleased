@@ -149,7 +149,7 @@ background-color:#1a5276;
 }
 
 #remarks {
-
+text-align: justify;
 
 }
 
@@ -178,4 +178,41 @@ background-color:#1a5276;
 	padding:10px;
 	margin:10px;
 	border-radius:20px;
+}
+
+.icao-group {
+  background-color: #1a5276;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 20px;
+}
+
+.icao-group h3 {
+  margin: 0 0 10px 0;
+}
+
+details {
+  margin: 5px 0;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.notam-category {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.notam-item {
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.notam-item p {
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }

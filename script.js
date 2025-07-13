@@ -309,6 +309,7 @@ function loadTakeoffData() {
 }
 
 function loadNOTAMS() {
+	
   var rawNotams = [];
   var notamsRgx =
     /([A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})\s+(?:(\d{2}[A-Z]{3}\d{2})\s+(\d{4})|(UFN))(.*?)(?=(?:[A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})\s+(?:(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})|(?:UFN)))/g;
@@ -316,28 +317,32 @@ function loadNOTAMS() {
   for (const match of matches) {
     rawNotams.push(match);
   }
+
   //Get list of all airport names in NOTAMS
-  var airportNamesRgx = /(?<=Description:\s{2})(.{1,80})\((\w{4})\/\w{3}\)/g;
-  var firNamesRgx = /(?<=Description:\s{2})(.{1,40}FIR)\s\(\w{4}\)/g;
+  var airportNamesRgx = /(?<=Description:\s+)(.{1,60})\((\w{4})\/\w{3}\)/g;
+  var firNamesRgx = /(?<=Description:\s+)(.{1,40}FIR)\s\((\w{4})\)/g;
   var airportNames = [];
   var firNames = [];
+	fltRls.notams = [];
   matches = textContent.matchAll(airportNamesRgx);
   var nameHolder = '';
   for (const match of matches) {
-    if (nameHolder !== match[1] && !match[1].includes('GENERAL')) {
+    if (nameHolder !== match[1]) {
       airportNames.push(match);
 
       nameHolder = match[1];
     }
   }
-
+	console.log(airportNames);
   matches = textContent.matchAll(firNamesRgx);
+ 
   for (const match of matches) {
     if (nameHolder !== match[1]) {
       firNames.push(match);
       nameHolder = match[1];
     }
   }
+  
   var airportFirNames = [];
   airportFirNames = airportNames.concat(firNames);
 
@@ -369,21 +374,97 @@ function loadNOTAMS() {
     );
     var notamRgx =
       /([A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})\s+(?:(\d{2}[A-Z]{3}\d{2})\s+(\d{4})|(UFN))(.*?)(?=\s(?:[A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})\s+(?:(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})|(?:UFN))|$)/g;
+console.log(airportFirNames)
+   function generateRegex(categories) {
+    // Remove duplicates from the categories list
+    const uniqueCategories = [...new Set(categories)];
+    
+    // Process each category: escape special characters and replace spaces with \s
+    const processedCategories = uniqueCategories.map(cat => {
+        // Escape special regex characters
+        const escaped = cat.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        // Replace spaces with \s to match any whitespace
+        const withWhitespace = escaped.replace(/ /g, '\\s');
+        return withWhitespace;
+    });
+    
+    // Join the processed categories with | to form alternatives
+    const categoriesPattern = processedCategories.join('|');
+    
+    // Define the lookahead for NOTAM identifier or end of string
+    const lookahead = '(?=.{1,5}(?:[A-Z]\\d{4}/\\d{2}|\\d{2}/\\d{3}|\\d/\\d{4})|\\s*$)';
+    
+    // Combine into the full regex pattern
+    const regexPattern = `(?:${categoriesPattern})${lookahead}`;
+    
+    return regexPattern;
+}
 
-    var NotamCatRgx =
-      /(?:AERODROME|DAYLIGHT\sMARKINGS|RUNWAY|APRON|TAXIWAY\(S\)|APPROACH\sLIGHT\sSYSTEM|AERODROME\sBEACON|PRECISION\sAPPROACH\sPATH\sINDICATOR|TAXIWAY\sCENTRELINE\sLIGHTS|ILS|TACAN|VOR|GLIDE\sPATH\s\(ILS\)|INNER\sMARKER\s\(ILS\)|OBSTACLE|OBSTACLE\sLIGHTS\sON\s\.\s\.\s\.|STANDARD\sINSTRUMENT\sARRIVAL\s\(STAR\)|STANDARD\sINSTRUMENT\sDEPARTURE\s\(SID\)|INSTRUMENT\sAPPROACH\sPROCEDURE|UNCATEGORISED|ATS\sROUTE|OBSTACLE\sCLEARANCE\sLIMIT|RESTRICTED\sAREA|APPROACH\sCONTROL\sSERVICE\s\(APP\)|UNCATEGORISED\sTEMPORARY\sRESTRICTED\sAREA|GLIDER\sFLYING|PARACHUTE\sJUMPING\sEXERCISE|METEOROLOGICAL\sSERVICE|SEQUENCED\sFLASHING\sLIGHTS|TAXIWAY\sCENTRELINE\sLIGHTS|RUNWAY\sTOUCHDOWN\sZONE\sLIGHTS|DME\sASSOCIATED\sWITH\sILS|ILS\sCATEGORY\sII|RUNWAY\sEND\sIDENTIFIER\sLIGHTS|RUNWAY\sALIGNMENT\sINDICATOR\sLIGHTS|RUNWAY\sTOUCHDOWN\sZONE\sLIGHTS|INNER\sMARKER\s\(ILS\)|LASER\sEMISSION|CONTROL\sAREA\s\(CTA\)|DANGER\sAREA|RUNWAY\sCENTRELINE\sLIGHTS|AIRSPACE\sRESERVATION|SURFACE\sMOVEMENT\sRADAR|TRANSMISSOMETER|TEMPORARY\sRESTRICTED\sAREA|GLIDER\sFLYING|PARACHUTE\sJUMPING\sEXERCISE|AIR\/GROUND\sFACILITY|METEOROLOGICAL\sSERVICE|SEQUENCED\sFLASHING\sLIGHTS|TAXIWAY\sCENTRELINE\sLIGHTS|RUNWAY\sTOUCHDOWN\sZONE\sLIGHTS|DME\sASSOCIATED\sWITH\sILS|ILS\sCATEGORY\sII|RUNWAY\sEND\sIDENTIFIER\sLIGHTS|RUNWAY\sALIGNMENT\sINDICATOR\sLIGHTS|RUNWAY\sTOUCHDOWN\sZONE\sLIGHTS|INNER\sMARKER\s\(ILS\)|LASER\sEMISSION|CONTROL\sAREA\s\(CTA\)|DANGER\sAREA|RUNWAY\sCENTRELINE\sLIGHTS|AIRSPACE\sRESERVATION|SURFACE\sMOVEMENT\sRADAR|TRANSMISSOMETER)(?=.{1,5}[A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4}|\s*$)/;
-    pageBreakRgx = new RegExp(
+// Example list of categories
+const categories = [
+    "AERODROME",
+    "DAYLIGHT MARKINGS",
+    "RUNWAY",
+    "APRON",
+    "TAXIWAY(S)",
+    "APPROACH LIGHT SYSTEM",
+    "AERODROME BEACON",
+    "PRECISION APPROACH PATH INDICATOR",
+    "TAXIWAY CENTRELINE LIGHTS",
+    "ILS",
+    "TACAN",
+    "VOR",
+    "GLIDE PATH (ILS)",
+    "INNER MARKER (ILS)",
+    "OBSTACLE",
+    "OBSTACLE LIGHTS ON ...",
+    "STANDARD INSTRUMENT ARRIVAL (STAR)",
+    "STANDARD INSTRUMENT DEPARTURE (SID)",
+    "INSTRUMENT APPROACH PROCEDURE",
+    "UNCATEGORISED",
+    "ATS ROUTE",
+    "OBSTACLE CLEARANCE LIMIT",
+    "RESTRICTED AREA",
+    "APPROACH CONTROL SERVICE (APP)",
+    "UNCATEGORISED TEMPORARY RESTRICTED AREA",
+    "GLIDER FLYING",
+    "PARACHUTE JUMPING EXERCISE",
+    "METEOROLOGICAL SERVICE",
+    "SEQUENCED FLASHING LIGHTS",
+    "RUNWAY TOUCHDOWN ZONE LIGHTS",
+    "DME ASSOCIATED WITH ILS",
+    "ILS CATEGORY II",
+    "RUNWAY END IDENTIFIER LIGHTS",
+    "RUNWAY ALIGNMENT INDICATOR LIGHTS",
+    "LASER EMISSION",
+    "CONTROL AREA (CTA)",
+    "DANGER AREA",
+    "RUNWAY CENTRELINE LIGHTS",
+    "AIRSPACE RESERVATION",
+    "SURFACE MOVEMENT RADAR",
+    "TRANSMISSOMETER",
+    "TEMPORARY RESTRICTED AREA",
+    "AIR/GROUND FACILITY"
+];
+
+// Generate and use the regex pattern
+const ntmCatPtrn = generateRegex(categories);
+const NotamCatRgx = new RegExp(ntmCatPtrn, 'g');
+
+
+   pageBreakRgx = new RegExp(
       fltRls.DEP + '\\s\\(.+?\\)\\s-.*?Description:',
       'g'
     );
     notamSection = notamSection.replaceAll(pageBreakRgx, '');
     //airportFirNames[i][4] = notamSection;
-    notamCat = notamSection.match(NotamCatRgx);
+    //notamCat = notamSection.match(NotamCatRgx);
+	notamCat = NotamCatRgx.exec(notamSection);
     matches = notamSection.matchAll(notamRgx);
     // Loop through each NOTAM
     for (const match of matches) {
       const notam = {};
-      //console.log(match)
+      
       notam.parentName = airportFirNames[i][1];
       notam.parentICAO = airportFirNames[i][2];
       notam.category = notamCat[0];
@@ -403,10 +484,12 @@ function loadNOTAMS() {
         notam.body = match[7];
         notam.category = notamCat;
       }
-      notams.push(notam);
+      fltRls.notams.push(notam);
+	  
     }
-	console.log(notams)
+
   }
+	
 }
 
 function loadWeather() {
@@ -619,6 +702,7 @@ function displayRelease() {
   document.getElementById('rampFuel').innerHTML = "Ramp Fuel: " +fltRls.fuel[9][2];
   document.getElementById('remarks').innerHTML = fltRls.remarks;
    displayWeather()
+   displayNOTAMS()
   for (const x of fltRls.Crew) {
     var row = document.createElement('tr');
     row.innerHTML = '<td>' + x + '</td>';
@@ -798,5 +882,76 @@ function displayWeather() {
   }
 }
 
-//For testing purposes
+const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
+function formatDate(date) {
+  if (!date) return 'UFN';
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = months[date.getUTCMonth()];
+  const year = String(date.getUTCFullYear()).slice(-2);
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  return `${day}${month}${year} ${hours}${minutes}Z`;
+}
+
+function trimLines(text) {
+  return text.split('\n').map(line => line.trim()).join('\n');
+}
+
+function displayNOTAMS() {
+  const container = document.getElementById('notamsDisplay');
+  if (!container) {
+    console.error('Container element "notamsDisplay" not found.');
+    return;
+  }
+  container.innerHTML = '';
+
+  const notamsByICAO = {};
+  fltRls.notams.forEach(notam => {
+    const icao = notam.parentICAO;
+    const category = notam.category || 'UNCATEGORISED';
+    if (!notamsByICAO[icao]) {
+      notamsByICAO[icao] = {};
+    }
+    if (!notamsByICAO[icao][category]) {
+      notamsByICAO[icao][category] = [];
+    }
+    notamsByICAO[icao][category].push(notam);
+  });
+
+  for (const icao in notamsByICAO) {
+    const icaoGroup = document.createElement('div');
+    icaoGroup.className = 'icao-group';
+
+    const heading = document.createElement('h3');
+    const parentName = fltRls.notams.find(n => n.parentICAO === icao).parentName.trim();
+    heading.textContent = `${icao} - ${parentName}`;
+    icaoGroup.appendChild(heading);
+
+    for (const category in notamsByICAO[icao]) {
+      const details = document.createElement('details');
+      const summary = document.createElement('summary');
+      summary.textContent = category;
+      details.appendChild(summary);
+
+      const categoryContainer = document.createElement('div');
+      categoryContainer.className = 'notam-category';
+      notamsByICAO[icao][category].forEach(notam => {
+        const notamDiv = document.createElement('div');
+        notamDiv.className = 'notam-item';
+        const p = document.createElement('p');
+        const effDateStr = formatDate(notam.effDate);
+        const expDateStr = formatDate(notam.expDate);
+        p.innerHTML = `
+          <strong>${notam.ID}</strong> - ${trimLines(notam.body)}<br>
+          Effective: ${effDateStr} | Expires: ${expDateStr}
+        `;
+        notamDiv.appendChild(p);
+        categoryContainer.appendChild(notamDiv);
+      });
+      details.appendChild(categoryContainer);
+      icaoGroup.appendChild(details);
+    }
+    container.appendChild(icaoGroup);
+  }
+}
