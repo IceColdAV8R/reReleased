@@ -477,9 +477,10 @@ const NotamCatRgx = new RegExp(ntmCatPtrn, 'g');
       }
       if (NotamCatRgx.test(match[7])) {
         //GET NOTAM CATEGORY, THEN DELETE IT
+		notam.category = notamCat;
         notamCat = match[7].match(NotamCatRgx)[0];
         notam.body = match[7].replace(NotamCatRgx, '');
-        notam.category = notamCat;
+        
       } else {
         notam.body = match[7];
         notam.category = notamCat;
