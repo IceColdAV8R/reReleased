@@ -64,7 +64,6 @@ h1, h3{
   display: none;
   border-style: solid;
   border-color: #FF5733;
-  max-width: 50%;
   margin: auto;
 }
 
@@ -84,12 +83,9 @@ h1, h3{
 
 #crew{
   margin:auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
 color:white;
 background-color:#1a5276;
-border-radius:20px;
-  padding:10px;
+
 }
 
 #fltDetailsA{
@@ -103,15 +99,20 @@ border-radius:20px;
 	margin-top:20px;
 }	
 
-#fltDetails{
+.defaultBox{
 	color:white;
 	background-color:#1a5276;
 	border-radius:20px;
 	padding: 5px;
 	margin:auto;
-	max-width: 50%;
+	max-width: 80%;
     margin-bottom:20px;
-}	
+	margin-top:20px;
+}
+
+.defaultBox h1{
+	font-size: 1.5em;
+}
 
 #MELs{
 
@@ -148,13 +149,8 @@ border-radius:20px;
 }
 
 #remarks {
-  margin-left: 10px;
-  margin-right: 10px;
 
-  padding:5px;
-  color:white;
-  background-color:#1a5276;
-  border-radius:20px;
+
 }
 
 #depWx {
