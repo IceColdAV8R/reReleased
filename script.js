@@ -105,6 +105,7 @@ async function loadCachedPDF() {
         console.error('Error loading PDF:', error);
         alert('Failed to load PDF. Check console for details.');
     }
+loadRelease()
 }
 
 function loadRelease() {
@@ -404,6 +405,7 @@ function loadNOTAMS() {
       }
       notams.push(notam);
     }
+	console.log(notams)
   }
 }
 
@@ -795,3 +797,6 @@ function displayWeather() {
     }
   }
 }
+
+//For testing purposes
+
