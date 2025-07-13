@@ -3,7 +3,7 @@
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 body{
-  background-color: whitesmoke;
+  background-color: #85929e;
 }
 
 h1, h3{
@@ -17,7 +17,7 @@ h1, h3{
   position: fixed;
   left:0;
   top:0;
-  background-color: yellow;
+  background-color: #13415f;
   width:100%;
 }
 #navBar {
@@ -25,7 +25,7 @@ h1, h3{
   width: 100%;
   bottom: 0;
   left: 0;
-  background-color: yellow;
+  background-color: #13415f;
   padding: 10px 0;
 }
 
@@ -58,11 +58,12 @@ h1, h3{
 #clock, #fltNum {
   text-align: center;
   margin:5px;
+  color: white;
 }
 #fltNum {
   display: none;
   border-style: solid;
-  
+  border-color: #FF5733;
   max-width: 50%;
   margin: auto;
 }
@@ -85,37 +86,75 @@ h1, h3{
   margin:auto;
   margin-top: 20px;
   margin-bottom: 20px;
-  border-style: solid;
-  border-color: black;
+color:white;
+background-color:#1a5276;
+border-radius:20px;
+  padding:10px;
 }
 
+#fltDetailsA{
+	color:white;
+	background-color:#1a5276;
+	border-radius:20px;
+	padding: 5px;
+	margin:auto;
+	max-width: 50%;
+    margin-bottom:20px;
+	margin-top:20px;
+}	
+
+#fltDetails{
+	color:white;
+	background-color:#1a5276;
+	border-radius:20px;
+	padding: 5px;
+	margin:auto;
+	max-width: 50%;
+    margin-bottom:20px;
+}	
+
 #MELs{
-  border-style: solid;
-  margin:auto;
+
   border-collapse: collapse;
+  margin:auto;
+  color:white
   margin-top: 20px;
   margin-bottom: 20px;
+  	
+	background-color:#1a5276;
+	border-radius:20px;
+	
 }
 #MELs th{
-  border-style: solid;
+
+  color:white;
+  padding:5px;
   border-collapse: collapse;
+  
 }
 
 #MELs tr:nth-child(even) {
-  background-color: goldenrod;
+  background-color: #b9770e ;
+  border-collapse: collapse;
 }
 
 
 #MELs td{
-    border-style: solid;
+
   border-collapse: collapse;
+  padding:5px;
+  color:white;
+  
 }
 
 #remarks {
   margin-left: 10px;
   margin-right: 10px;
-  border-style: solid;
+
   padding:5px;
+  color:white;
+  background-color:#1a5276;
+  border-radius:20px;
 }
 
 #depWx {
@@ -131,6 +170,16 @@ h1, h3{
 }
 
 .airfield-weather p{
-  margin-top:5px;
-  margin-bottom:5px;
+  margin: 10px;
+  color: white;
+}
+.airfield-weather h3{
+	color: white;
+}
+
+.airfield-weather {
+	background-color: #1a5276 ;
+	padding:10px;
+	margin:10px;
+	border-radius:20px;
 }
