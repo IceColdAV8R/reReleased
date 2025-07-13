@@ -28,14 +28,14 @@
       <div id="debugDiv">
         <input type="file" id="pdfInput" accept="application/pdf">
         <button onclick="loadCachedPDF()">
-          Load Cached PDF
+          Load Sample Release
         </button>
         <button onclick="loadRelease()">
           Process PDF
         </button>
       </div>
       <div id="screen1" class="screen" style='display:none'>
-		<div id="fltDetailsA">
+		<div class="defaultBox">
         <h1 id="rlsNum">
           Release #3
         </h1>
@@ -48,9 +48,11 @@
         <h3 id="acftComments">
         </h3>
 		</div>
+		<div class="defaultBox">
         <table id="crew">
         </table>
-        <div id="fltDetails">
+		</div>
+        <div class="defaultBox">
           <h3 id="authOut">
           </h3>
           <h3 id="ETE">
@@ -67,8 +69,10 @@
               </th>
             </tr>
           </table>
+		  <div class = "defaultBox">
           <p id="remarks">
           </p>
+		  </div>
           <div id="weather">
 		  </div>
         </div>
@@ -86,7 +90,7 @@
       </div>
       <div class="navRow bottomNavRow">
         <button class="navButton" onclick="forcePWAUpdate()">
-          Update
+          Reset
         </button>
       </div>
     </div>
