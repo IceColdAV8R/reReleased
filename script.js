@@ -333,7 +333,7 @@ function loadNOTAMS() {
       nameHolder = match[1];
     }
   }
-	console.log(airportNames);
+
   matches = textContent.matchAll(firNamesRgx);
  
   for (const match of matches) {
@@ -374,7 +374,7 @@ function loadNOTAMS() {
     );
     var notamRgx =
       /([A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})\s+(?:(\d{2}[A-Z]{3}\d{2})\s+(\d{4})|(UFN))(.*?)(?=\s(?:[A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})\s+(?:(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})|(?:UFN))|$)/g;
-console.log(airportFirNames)
+
    function generateRegex(categories) {
     // Remove duplicates from the categories list
     const uniqueCategories = [...new Set(categories)];
@@ -503,7 +503,7 @@ function loadWeather() {
   if (fltRls.Alt2){
 	  weather.alt2 = getWeather(fltRls.Alt2)
   }
-  if (fltRls.Alt3){
+  if (fltRls.AltTo){
 	  weather.altTo = getWeather(fltRls.AltTo)
   }
   fltRls.weather = weather;
@@ -544,7 +544,7 @@ function getWeather(icao) {
   taf.end = parseDDHH(tafBody[3]);
   taf.text = tafBody[0];
   taf.subs = tafSubs;
-  console.log(metarText);
+ 
   var wx = {};
   wx.metar = metar;
   wx.taf = taf;
@@ -955,4 +955,9 @@ function displayNOTAMS() {
     }
     container.appendChild(icaoGroup);
   }
+}
+
+function showHideWx() {
+    const weatherDiv = document.getElementById("weather");
+    weatherDiv.style.display = weatherDiv.style.display === "none" ? "block" : "none";
 }
