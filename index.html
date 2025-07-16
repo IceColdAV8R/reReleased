@@ -72,22 +72,31 @@
 		  <div class = "defaultBox">
           <p id="remarks">
           </p>
-		  </div>
-          <div id="weather">
-		  </div>
-		  <div id="notamsDisplay"></div>
+		  
         </div>
+		</div>
       <div id="screen2" class="screen" style='display:none'>
-        <h1>
-          Test
-        </h1>
+        <div id="weather">
+		  </div>
       </div>
-    </div>
+	  <div id="screen3" class="screen" style='display:none'>
+	  <div id="notamsDisplay"></div>
+	  </div>
+	  </div>
+          
+	
+   
     <div id="navBar">
       <div class="navRow topNavRow">
-        <button class="navButton">
+        <button class="navButton" onclick="showScreen(1)">
           Brief
         </button>
+		<button class="navButton" onclick="showScreen(2)">
+			Weather
+		</button>
+		<button class="navButton" onclick="showScreen(3)">
+			NOTAMS
+		</button>
       </div>
       <div class="navRow bottomNavRow">
         <button class="navButton" onclick="forcePWAUpdate()">
