@@ -940,14 +940,19 @@ function displayNOTAMS() {
       notamsByICAO[icao][category].forEach(notam => {
         const notamDiv = document.createElement('div');
         notamDiv.className = 'notam-item';
-        const p = document.createElement('p');
-        const effDateStr = formatDate(notam.effDate);
-        const expDateStr = formatDate(notam.expDate);
-        p.innerHTML = `
-          <strong>${notam.ID}</strong> - ${trimLines(notam.body)}<br>
-          Effective: ${effDateStr} | Expires: ${expDateStr}
-        `;
-        notamDiv.appendChild(p);
+        
+        const pBody = document.createElement('p');
+        pBody.innerHTML = `<strong>${notam.ID}</strong> - ${trimLines(notam.body)}`;
+        
+        const pEffective = document.createElement('p');
+        pEffective.textContent = `Effective: ${formatDate(notam.effDate)}`;
+        
+        const pExpires = document.createElement('p');
+        pExpires.textContent = `Expires: ${formatDate(notam.expDate)}`;
+        
+        notamDiv.appendChild(pBody);
+        notamDiv.appendChild(pEffective);
+        notamDiv.appendChild(pExpires);
         categoryContainer.appendChild(notamDiv);
       });
       details.appendChild(categoryContainer);
