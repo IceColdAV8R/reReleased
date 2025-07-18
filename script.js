@@ -467,7 +467,7 @@ const NotamCatRgx = new RegExp(ntmCatPtrn, 'g');
       
       notam.parentName = airportFirNames[i][1];
       notam.parentICAO = airportFirNames[i][2];
-      notam.category = notamCat[0];
+      notam.category = notamCat;
       notam.ID = match[1];
       notam.effDate = toDateObject(match[2], match[3]);
       if (match[4]) {
@@ -475,15 +475,17 @@ const NotamCatRgx = new RegExp(ntmCatPtrn, 'g');
       } else {
         notam.expDate = null;
       }
+	  var fieldAndFirRgx =  new RegExp(escapeRegExp(airportFirNames[i][0])+",.{1,50}\\(\\w{4}\\)");
       if (NotamCatRgx.test(match[7])) {
         //GET NOTAM CATEGORY, THEN DELETE IT
 		notam.category = notamCat;
         notamCat = match[7].match(NotamCatRgx)[0];
         notam.body = match[7].replace(NotamCatRgx, '');
-        
+        notam.body = notam.body.replace(fieldAndFirRgx,"")
       } else {
         notam.body = match[7];
-        notam.category = notamCat;
+        notam.category = notamCat
+		notam.body = notam.body.replace(fieldAndFirRgx,"")
       }
       fltRls.notams.push(notam);
 	  
@@ -963,6 +965,39 @@ function displayNOTAMS() {
 }
 
 function showHideWx() {
+	
     const weatherDiv = document.getElementById("weather");
     weatherDiv.style.display = weatherDiv.style.display === "none" ? "block" : "none";
+}
+
+async function waitForTextContent() {
+    return new Promise((resolve) => {
+        const checkText = () => {
+            if (extractedText !== '') {
+                resolve();
+            } else {
+                setTimeout(checkText, 100); // Check every 100ms
+            }
+        };
+        checkText();
+    });
+}
+
+async function loadReleaseWithWait() {
+    await waitForTextContent();
+    if (textContent === '') {
+        textContent = extractedText;
+    }
+    if (textContent === '') {
+        console.error('textContent is still empty after waiting.');
+        alert('No text available to process.');
+        return;
+    }
+    // Proceed with the rest of loadRelease() logic
+    var matchBox;
+    var match;
+    var loopHelp = true;
+    var pageNumsRgx = /REPUBLIC AIRWAYS BRIEF PAGE \d\d? OF \d\d\s+PAGE \d\d? OF \d\d/g;
+    textContent = textContent.replaceAll(pageNumsRgx, '');
+    // ... rest of the loadRelease() code ...
 }
