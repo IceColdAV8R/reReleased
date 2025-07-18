@@ -28,11 +28,9 @@
       <div id="debugDiv">
         <input type="file" id="pdfInput" accept="application/pdf">
         <button onclick="loadCachedPDF()">
-          Load Sample Release
+          Load Release
         </button>
-        <button onclick="loadRelease()">
-          Process PDF
-        </button>
+
       </div>
       <div id="screen1" class="screen" style='display:none'>
 		<div class="defaultBox">
@@ -82,6 +80,9 @@
 	  <div id="screen3" class="screen" style='display:none'>
 	  <div id="notamsDisplay"></div>
 	  </div>
+	  <div id="screen4" class="screen" style='display:none'>
+	  <iframe src="https://globe.adsbexchange.com/" width="100%" height="600px" frameborder="0" style="border:0;" allow="geolocation" allowfullscreen></iframe>
+	  </div>
 	  </div>
           
 	
@@ -96,6 +97,9 @@
 		</button>
 		<button class="navButton" onclick="showScreen(3)">
 			NOTAMS
+		</button>
+		<button class="navButton" onclick="showScreen(4)">
+			Traffic
 		</button>
       </div>
       <div class="navRow bottomNavRow">
