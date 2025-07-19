@@ -418,16 +418,16 @@ const categories = [
     "GLIDE PATH (ILS)",
     "INNER MARKER (ILS)",
     "OBSTACLE",
-    "OBSTACLE LIGHTS ON ...",
+    "OBSTACLE LIGHTS ON . . .",
     "STANDARD INSTRUMENT ARRIVAL (STAR)",
     "STANDARD INSTRUMENT DEPARTURE (SID)",
     "INSTRUMENT APPROACH PROCEDURE",
-    "UNCATEGORISED",
     "ATS ROUTE",
     "OBSTACLE CLEARANCE LIMIT",
     "RESTRICTED AREA",
     "APPROACH CONTROL SERVICE (APP)",
-    "UNCATEGORISED TEMPORARY RESTRICTED AREA",
+    "UNCATEGORISED",
+	"TEMPORARY RESTRICTED AREA",
     "GLIDER FLYING",
     "PARACHUTE JUMPING EXERCISE",
     "METEOROLOGICAL SERVICE",
@@ -707,6 +707,7 @@ function displayRelease() {
   document.getElementById('remarks').innerHTML = fltRls.remarks;
    displayWeather()
    displayNOTAMS()
+   createNavLogTable()
   for (const x of fltRls.Crew) {
     var row = document.createElement('tr');
     row.innerHTML = '<td>' + x + '</td>';
@@ -1001,4 +1002,66 @@ async function loadReleaseWithWait() {
     var pageNumsRgx = /REPUBLIC AIRWAYS BRIEF PAGE \d\d? OF \d\d\s+PAGE \d\d? OF \d\d/g;
     textContent = textContent.replaceAll(pageNumsRgx, '');
     // ... rest of the loadRelease() code ...
+}
+
+async function refreshPageOfflineSafe() {
+  try {
+    // Reset app state (clear UI and variables)
+    resetAppState();
+
+    // Reload the page without forcing a network fetch
+    window.location.reload(false); // Soft reload uses cached resources
+  } catch (error) {
+    console.error('Error during offline-safe page refresh:', error);
+    alert('Failed to refresh page. Please try again.');
+  }
+}
+
+function createNavLogTable() {
+  const screen5 = document.getElementById('screen5');
+  if (!screen5) {
+    console.error('screen5 div not found');
+    return;
+  }
+  const table = document.createElement('table');
+  const headerRow = table.insertRow();
+  const headers = ['Waypoint', '-', 'Distance', 'Time', 'Fuel'];
+  headers.forEach(headerText => {
+    const th = document.createElement('th');
+    th.textContent = headerText;
+    headerRow.appendChild(th);
+  });
+  fltRls.NavLog.forEach(waypoint => {
+    const row1 = table.insertRow();
+    const nameCell = row1.insertCell();
+    nameCell.textContent = waypoint[1];
+    nameCell.rowSpan = 3;
+    const legLabelCell = row1.insertCell();
+    legLabelCell.textContent = 'LEG';
+    const legDistCell = row1.insertCell();
+    legDistCell.textContent = waypoint[7];
+    const legTimeCell = row1.insertCell();
+    legTimeCell.textContent = waypoint[8];
+    const legFuelCell = row1.insertCell();
+    legFuelCell.textContent = waypoint[9];
+    const row2 = table.insertRow();
+    const totLabelCell = row2.insertCell();
+    totLabelCell.textContent = 'TOT';
+    const totDistCell = row2.insertCell();
+    totDistCell.textContent = waypoint[16];
+    const totTimeCell = row2.insertCell();
+    totTimeCell.textContent = waypoint[17];
+    const totFuelCell = row2.insertCell();
+    totFuelCell.textContent = waypoint[18];
+    const row3 = table.insertRow();
+    const remLabelCell = row3.insertCell();
+    remLabelCell.textContent = 'REM';
+    const remDistCell = row3.insertCell();
+    remDistCell.textContent = waypoint[22];
+    const remTimeCell = row3.insertCell();
+    remTimeCell.textContent = waypoint[23];
+    const remFuelCell = row3.insertCell();
+    remFuelCell.textContent = waypoint[24];
+  });
+  screen5.appendChild(table);
 }
