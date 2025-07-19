@@ -119,7 +119,7 @@ background-color:#1a5276;
   border-collapse: collapse;
   margin:auto;
   color:white
-  margin-top: 20px;
+  margin-top: 20px; 
   margin-bottom: 20px;
   	
 	background-color:#1a5276;
@@ -215,4 +215,45 @@ summary {
   margin: 0;
   padding: 0;
   text-align: left;
+}
+
+/* Navigation Log Table Styling */
+#screen5 table {
+  border-collapse: collapse;
+  margin: auto;
+  color: white;
+  background-color: #1a5276;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  max-width: 95%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#screen5 th {
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#screen5 td {
+  color: white;
+  padding: 5px;
+  text-align: center;
+  border: none;
+}
+
+/* Alternating background for all cells in the three rows of every other waypoint */
+#screen5 tr:nth-child(6n-4),
+#screen5 tr:nth-child(6n-3),
+#screen5 tr:nth-child(6n-2) {
+  background-color: #b9770e; /* Matches MELs alternating row color */
+}
+
+/* Ensure the waypoint name cell (spanning 3 rows) aligns properly */
+#screen5 td[rowspan="3"] {
+  vertical-align: middle;
+  font-weight: bold;
 }
