@@ -233,14 +233,14 @@ summary {
 
 #screen5 th {
   color: white;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   font-weight: bold;
+
 }
 
 #screen5 td {
   color: white;
-  padding: 5px;
   text-align: center;
   border: none;
 }
