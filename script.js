@@ -1025,7 +1025,7 @@ function createNavLogTable() {
   }
   const table = document.createElement('table');
   const headerRow = table.insertRow();
-  const headers = ['Waypoint', '-', 'Distance', 'Time', 'Fuel'];
+  const headers = ['WPT', '-', 'DIST', 'TIME', 'FUEL'];
   headers.forEach(headerText => {
     const th = document.createElement('th');
     th.textContent = headerText;
