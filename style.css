@@ -12,7 +12,6 @@ h1, h3{
   margin-bottom:0;
 }
 
-
 #topBox {
   position: fixed;
   left:0;
@@ -83,74 +82,65 @@ h1, h3{
 
 #crew{
   margin:auto;
-color:white;
-background-color:#1a5276;
-
+  color:white;
+  background-color:#1a5276;
 }
 
 #fltDetailsA{
-	color:white;
-	background-color:#1a5276;
-	border-radius:20px;
-	padding: 5px;
-	margin:auto;
-	max-width: 50%;
-    margin-bottom:20px;
-	margin-top:20px;
+  color:white;
+  background-color:#1a5276;
+  border-radius:20px;
+  padding: 5px;
+  margin:auto;
+  max-width: 50%;
+  margin-bottom:20px;
+  margin-top:20px;
 }	
 
 .defaultBox{
-	color:white;
-	background-color:#1a5276;
-	border-radius:20px;
-	padding: 5px;
-	margin:auto;
-	max-width: 95%;
-    margin-bottom:20px;
-	margin-top:20px;
+  color:white;
+  background-color:#1a5276;
+  border-radius:20px;
+  padding: 5px;
+  margin:auto;
+  max-width: 95%;
+  margin-bottom:20px;
+  margin-top:20px;
 }
 
 .defaultBox h1{
-	font-size: 1.5em;
+  font-size: 1.5em;
 }
 
 #MELs{
-
   border-collapse: collapse;
   margin:auto;
-  color:white
+  color:white;
   margin-top: 20px; 
   margin-bottom: 20px;
-  	
-	background-color:#1a5276;
-	border-radius:20px;
-	
+  background-color:#1a5276;
+  border-radius:20px;
 }
-#MELs th{
 
+#MELs th{
   color:white;
   padding:5px;
   border-collapse: collapse;
-  
 }
 
 #MELs tr:nth-child(even) {
-  background-color: #b9770e ;
+  background-color: #b9770e;
   border-collapse: collapse;
 }
 
-
 #MELs td{
-
   border-collapse: collapse;
   padding:5px;
   color:white;
-  
 }
 
 #remarks {
-text-align: justify;
-
+  text-align: justify;
 }
 
 #depWx {
@@ -170,14 +160,14 @@ text-align: justify;
   color: white;
 }
 .airfield-weather h3{
-	color: white;
+  color: white;
 }
 
 .airfield-weather {
-	background-color: #1a5276 ;
-	padding:10px;
-	margin:10px;
-	border-radius:20px;
+  background-color: #1a5276;
+  padding:10px;
+  margin:10px;
+  border-radius:20px;
 }
 
 .icao-group {
@@ -196,6 +186,10 @@ details {
   margin: 5px 0;
 }
 
+details.selected-category {
+  display: none; /* Hidden by default, shown via JS when not empty */
+}
+
 summary {
   cursor: pointer;
   font-weight: bold;
@@ -209,6 +203,11 @@ summary {
 .notam-item {
   margin: 5px 0;
   padding: 5px;
+  cursor: pointer; /* Indicate that the item is clickable */
+}
+
+.notam-item.selected {
+  background-color: #b9770e; /* Highlight color for selected NOTAMs */
 }
 
 .notam-item p {
@@ -236,7 +235,6 @@ summary {
   padding: 5px;
   text-align: center;
   font-weight: bold;
-
 }
 
 #screen5 td {
