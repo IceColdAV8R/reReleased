@@ -3,7 +3,6 @@ var textContent ='';
 let selectedFile = null; // Track user-selected PDF
 const fltRls = {};
 
-
 document.addEventListener('DOMContentLoaded', () => {
   setScreenSpaceDimensions();
 });
@@ -50,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
 });
 
 // Service worker registration
@@ -77,7 +75,6 @@ async function extractTextFromPDF(pdfDoc) {
   }
   return fullText.trim();
 }
-
 
 // Load a cached PDF (sampleRelease.pdf) unless a file is selected
 async function loadCachedPDF() {
@@ -106,7 +103,7 @@ async function loadCachedPDF() {
         console.error('Error loading PDF:', error);
         alert('Failed to load PDF. Check console for details.');
     }
-loadRelease()
+    loadRelease()
 }
 
 function loadRelease() {
@@ -127,7 +124,6 @@ function loadRelease() {
   fltRls.ARR = match[3];
   fltRls.ETE = match[4];
   
-
   var crewRgx =
     /(?:CA:|FO:|FA:|JS:)\s*\d{6}\s*?(?:[a-zA-Z,\-,\.]*\s?){1,5}(?=\s*(?:CA:|FO:|FA:|JS:|FLIGHT|$))/gm; //works
   fltRls.Crew = [];
@@ -330,7 +326,6 @@ function loadNOTAMS() {
   for (const match of matches) {
     if (nameHolder !== match[1]) {
       airportNames.push(match);
-
       nameHolder = match[1];
     }
   }
@@ -376,124 +371,118 @@ function loadNOTAMS() {
     var notamRgx =
       /([A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})\s+(?:(\d{2}[A-Z]{3}\d{2})\s+(\d{4})|(UFN))(.*?)(?=\s(?:[A-Z]\d{4}\/\d{2}|\d{2}\/\d{3}|\d\/\d{4})\s+(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})\s+(?:(?:\d{2}[A-Z]{3}\d{2})\s+(?:\d{4})|(?:UFN))|$)/g;
 
-   function generateRegex(categories) {
-    // Remove duplicates from the categories list
-    const uniqueCategories = [...new Set(categories)];
-    
-    // Process each category: escape special characters and replace spaces with \s
-    const processedCategories = uniqueCategories.map(cat => {
-        // Escape special regex characters
-        const escaped = cat.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-        // Replace spaces with \s to match any whitespace
-        const withWhitespace = escaped.replace(/ /g, '\\s');
-        return withWhitespace;
-    });
-    
-    // Join the processed categories with | to form alternatives
-    const categoriesPattern = processedCategories.join('|');
-    
-    // Define the lookahead for NOTAM identifier or end of string
-    const lookahead = '(?=.{1,5}(?:[A-Z]\\d{4}/\\d{2}|\\d{2}/\\d{3}|\\d/\\d{4})|\\s*$)';
-    
-    // Combine into the full regex pattern
-    const regexPattern = `(?:${categoriesPattern})${lookahead}`;
-    
-    return regexPattern;
-}
+    function generateRegex(categories) {
+      // Remove duplicates from the categories list
+      const uniqueCategories = [...new Set(categories)];
+      
+      // Process each category: escape special characters and replace spaces with \s
+      const processedCategories = uniqueCategories.map(cat => {
+          // Escape special regex characters
+          const escaped = cat.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+          // Replace spaces with \s to match any whitespace
+          const withWhitespace = escaped.replace(/ /g, '\\s');
+          return withWhitespace;
+      });
+      
+      // Join the processed categories with | to form alternatives
+      const categoriesPattern = processedCategories.join('|');
+      
+      // Define the lookahead for NOTAM identifier or end of string
+      const lookahead = '(?=.{1,5}(?:[A-Z]\\d{4}/\\d{2}|\\d{2}/\\d{3}|\\d/\\d{4})|\\s*$)';
+      
+      // Combine into the full regex pattern
+      const regexPattern = `(?:${categoriesPattern})${lookahead}`;
+      
+      return regexPattern;
+  }
 
-// Example list of categories
-const categories = [
-    "AERODROME",
-    "DAYLIGHT MARKINGS",
-    "RUNWAY",
-    "APRON",
-    "TAXIWAY(S)",
-    "APPROACH LIGHT SYSTEM",
-    "AERODROME BEACON",
-    "PRECISION APPROACH PATH INDICATOR",
-    "TAXIWAY CENTRELINE LIGHTS",
-    "ILS",
-    "TACAN",
-    "VOR",
-    "GLIDE PATH (ILS)",
-    "INNER MARKER (ILS)",
-    "OBSTACLE",
-    "OBSTACLE LIGHTS ON . . .",
-    "STANDARD INSTRUMENT ARRIVAL (STAR)",
-    "STANDARD INSTRUMENT DEPARTURE (SID)",
-    "INSTRUMENT APPROACH PROCEDURE",
-    "ATS ROUTE",
-    "OBSTACLE CLEARANCE LIMIT",
-    "RESTRICTED AREA",
-    "APPROACH CONTROL SERVICE (APP)",
-    "UNCATEGORISED",
-	"TEMPORARY RESTRICTED AREA",
-    "GLIDER FLYING",
-    "PARACHUTE JUMPING EXERCISE",
-    "METEOROLOGICAL SERVICE",
-    "SEQUENCED FLASHING LIGHTS",
-    "RUNWAY TOUCHDOWN ZONE LIGHTS",
-    "DME ASSOCIATED WITH ILS",
-    "ILS CATEGORY II",
-    "RUNWAY END IDENTIFIER LIGHTS",
-    "RUNWAY ALIGNMENT INDICATOR LIGHTS",
-    "LASER EMISSION",
-    "CONTROL AREA (CTA)",
-    "DANGER AREA",
-    "RUNWAY CENTRELINE LIGHTS",
-    "AIRSPACE RESERVATION",
-    "SURFACE MOVEMENT RADAR",
-    "TRANSMISSOMETER",
-    "TEMPORARY RESTRICTED AREA",
-    "AIR/GROUND FACILITY"
-];
+  // Example list of categories
+  const categories = [
+      "AERODROME",
+      "DAYLIGHT MARKINGS",
+      "RUNWAY",
+      "APRON",
+      "TAXIWAY(S)",
+      "APPROACH LIGHT SYSTEM",
+      "AERODROME BEACON",
+      "PRECISION APPROACH PATH INDICATOR",
+      "TAXIWAY CENTRELINE LIGHTS",
+      "ILS",
+      "TACAN",
+      "VOR",
+      "GLIDE PATH (ILS)",
+      "INNER MARKER (ILS)",
+      "OBSTACLE",
+      "OBSTACLE LIGHTS ON . . .",
+      "STANDARD INSTRUMENT ARRIVAL (STAR)",
+      "STANDARD INSTRUMENT DEPARTURE (SID)",
+      "INSTRUMENT APPROACH PROCEDURE",
+      "ATS ROUTE",
+      "OBSTACLE CLEARANCE LIMIT",
+      "RESTRICTED AREA",
+      "APPROACH CONTROL SERVICE (APP)",
+      "UNCATEGORISED",
+      "TEMPORARY RESTRICTED AREA",
+      "GLIDER FLYING",
+      "PARACHUTE JUMPING EXERCISE",
+      "METEOROLOGICAL SERVICE",
+      "SEQUENCED FLASHING LIGHTS",
+      "RUNWAY TOUCHDOWN ZONE LIGHTS",
+      "DME ASSOCIATED WITH ILS",
+      "ILS CATEGORY II",
+      "RUNWAY END IDENTIFIER LIGHTS",
+      "RUNWAY ALIGNMENT INDICATOR LIGHTS",
+      "LASER EMISSION",
+      "CONTROL AREA (CTA)",
+      "DANGER AREA",
+      "RUNWAY CENTRELINE LIGHTS",
+      "AIRSPACE RESERVATION",
+      "SURFACE MOVEMENT RADAR",
+      "TRANSMISSOMETER",
+      "TEMPORARY RESTRICTED AREA",
+      "AIR/GROUND FACILITY"
+  ];
 
-// Generate and use the regex pattern
-const ntmCatPtrn = generateRegex(categories);
-const NotamCatRgx = new RegExp(ntmCatPtrn, 'g');
+  // Generate and use the regex pattern
+  const ntmCatPtrn = generateRegex(categories);
+  const NotamCatRgx = new RegExp(ntmCatPtrn, 'g');
 
-
-   pageBreakRgx = new RegExp(
+  pageBreakRgx = new RegExp(
       fltRls.DEP + '\\s\\(.+?\\)\\s-.*?Description:',
       'g'
-    );
-    notamSection = notamSection.replaceAll(pageBreakRgx, '');
-    //airportFirNames[i][4] = notamSection;
-    //notamCat = notamSection.match(NotamCatRgx);
-	notamCat = NotamCatRgx.exec(notamSection);
-    matches = notamSection.matchAll(notamRgx);
-    // Loop through each NOTAM
-    for (const match of matches) {
-      const notam = {};
-      
-      notam.parentName = airportFirNames[i][1];
-      notam.parentICAO = airportFirNames[i][2];
-      notam.category = notamCat;
-      notam.ID = match[1];
-      notam.effDate = toDateObject(match[2], match[3]);
-      if (match[4]) {
-        notam.expDate = toDateObject(match[4], match[5]);
-      } else {
-        notam.expDate = null;
-      }
-	  var fieldAndFirRgx =  new RegExp(escapeRegExp(airportFirNames[i][0])+",.{1,50}\\(\\w{4}\\)");
-      if (NotamCatRgx.test(match[7])) {
-        //GET NOTAM CATEGORY, THEN DELETE IT
-		notam.category = notamCat;
-        notamCat = match[7].match(NotamCatRgx)[0];
-        notam.body = match[7].replace(NotamCatRgx, '');
-        notam.body = notam.body.replace(fieldAndFirRgx,"")
-      } else {
-        notam.body = match[7];
-        notam.category = notamCat
-		notam.body = notam.body.replace(fieldAndFirRgx,"")
-      }
-      fltRls.notams.push(notam);
-	  
+  );
+  notamSection = notamSection.replaceAll(pageBreakRgx, '');
+  notamCat = NotamCatRgx.exec(notamSection);
+  matches = notamSection.matchAll(notamRgx);
+  // Loop through each NOTAM
+  for (const match of matches) {
+    const notam = {};
+    notam.parentName = airportFirNames[i][1];
+    notam.parentICAO = airportFirNames[i][2];
+    notam.category = notamCat;
+    notam.ID = match[1];
+    notam.effDate = toDateObject(match[2], match[3]);
+    if (match[4]) {
+      notam.expDate = toDateObject(match[4], match[5]);
+    } else {
+      notam.expDate = null;
     }
-
+    var fieldAndFirRgx =  new RegExp(escapeRegExp(airportFirNames[i][0])+",.{1,50}\\(\\w{4}\\)");
+    if (NotamCatRgx.test(match[7])) {
+      //GET NOTAM CATEGORY, THEN DELETE IT
+      notam.category = notamCat;
+      notamCat = match[7].match(NotamCatRgx)[0];
+      notam.body = match[7].replace(NotamCatRgx, '');
+      notam.body = notam.body.replace(fieldAndFirRgx,"")
+    } else {
+      notam.body = match[7];
+      notam.category = notamCat
+      notam.body = notam.body.replace(fieldAndFirRgx,"")
+    }
+    notam.selected = false; // Initialize selected property
+    fltRls.notams.push(notam);
   }
-	
+}
 }
 
 function loadWeather() {
@@ -501,13 +490,13 @@ function loadWeather() {
   weather.dep = getWeather(fltRls.DEP);
   weather.arr = getWeather(fltRls.ARR);
   if (fltRls.Alt1){
-	  weather.alt1 = getWeather(fltRls.Alt1)
+    weather.alt1 = getWeather(fltRls.Alt1)
   }
   if (fltRls.Alt2){
-	  weather.alt2 = getWeather(fltRls.Alt2)
+    weather.alt2 = getWeather(fltRls.Alt2)
   }
   if (fltRls.AltTo){
-	  weather.altTo = getWeather(fltRls.AltTo)
+    weather.altTo = getWeather(fltRls.AltTo)
   }
   fltRls.weather = weather;
 }
@@ -519,7 +508,7 @@ function getWeather(icao) {
   var tafRgx = new RegExp('(?:TAF)(?:\\sAMD)?\\s{2}' + icao + '.*?(?=TAF)');
   var tafSubRgx =
     /(?:(BECMG|PROB\d{2}|TEMPO)\s(\d{4})\/(\d{4})|FM(\d{6}))(.*?)(?=FM|BECMG|PROB|TEMPO|TAF|$)/g;
-  var tafMainRgx = /TAF.*?(\d{6})Z\s(\d{4})\/(\d{4}).*?(?=FM|BECMG|TEMPO|PROB|$)/;
+  var tafMainRgx = /TAF.*?(\d{6})Z\s(\d{4})\/(\d{4}).*?(?=FM|BECMG|TEMPO|PROB|TAF|$)/;
   var metarText = textContent.match(metarRgx);
   var tafText = textContent.match(tafRgx);
   var tafBody = tafText[0].match(tafMainRgx);
@@ -528,7 +517,6 @@ function getWeather(icao) {
   for (const match of matches) {
     const tafSub = {};
     tafSub.text = match[0];
-    //tafSub.body = match[5]
     if (match[2]) {
       tafSub.begin = parseDDHH(match[2]);
       tafSub.end = parseDDHH(match[3]);
@@ -668,46 +656,17 @@ function displayRelease() {
   document.getElementById('fltNum').style.display = 'block';
   document.getElementById('fltNum').innerHTML = fltRls.ID;
 
-  /*
-  document.getElementById('div1').style.display = 'block';
-  document.getElementById('flightID').innerHTML = fltRls.ID;
-  
-  document.getElementById('DepArr').innerHTML =
-    fltRls.DEP + ' - ' + fltRls.ARR;
-  //Fill Fuel Table
-  document.getElementById('burnQ').innerHTML = fltRls.fuel[0][2];
-  document.getElementById('burnT').innerHTML = fltRls.fuel[0][3];
-  document.getElementById('reserveQ').innerHTML = fltRls.fuel[1][2];
-  document.getElementById('reserveT').innerHTML = fltRls.fuel[1][3];
-  document.getElementById('holdQ').innerHTML = fltRls.fuel[2][2];
-  document.getElementById('holdT').innerHTML = fltRls.fuel[2][3];
-  document.getElementById('altQ').innerHTML = fltRls.fuel[3][2];
-  document.getElementById('altT').innerHTML = fltRls.fuel[3][3];
-  document.getElementById('ballastQ').innerHTML = fltRls.fuel[4][2];
-  document.getElementById('ballastT').innerHTML = 'N/A';
-  document.getElementById('melQ').innerHTML = fltRls.fuel[5][2];
-  document.getElementById('melT').innerHTML = fltRls.fuel[5][3];
-  document.getElementById('minQ').innerHTML = fltRls.fuel[6][2];
-  document.getElementById('minT').innerHTML = fltRls.fuel[6][3];
-  document.getElementById('taxiQ').innerHTML = fltRls.fuel[7][2];
-  document.getElementById('taxiT').innerHTML = fltRls.fuel[7][3];
-  document.getElementById('extraQ').innerHTML = fltRls.fuel[8][2];
-  document.getElementById('extraT').innerHTML = fltRls.fuel[8][3];
-  document.getElementById('rampQ').innerHTML = fltRls.fuel[9][2];
-  document.getElementById('rampT').innerHTML = fltRls.fuel[9][3];
-*/
   document.getElementById('DepArr').innerHTML = fltRls.DEP + ' - ' + fltRls.ARR;
   document.getElementById('aircraft').innerHTML = fltRls.aircraft[1]+ " "+fltRls.aircraft[2];
   document.getElementById('acftComments').innerHTML = fltRls.aircraft[3];
   document.getElementById('rlsNum').innerHTML = fltRls.rlsNum;
-  //document.getElementById().innerHTML = ;
   document.getElementById('authOut').innerHTML = "Authorized Out: " + fltRls.AuthDep[1];
   document.getElementById('ETE').innerHTML = "Estimated Enroute: "+fltRls.ETE;
   document.getElementById('rampFuel').innerHTML = "Ramp Fuel: " +fltRls.fuel[9][2];
   document.getElementById('remarks').innerHTML = fltRls.remarks;
-   displayWeather()
-   displayNOTAMS()
-   createNavLogTable()
+  displayWeather()
+  displayNOTAMS()
+  createNavLogTable()
   for (const x of fltRls.Crew) {
     var row = document.createElement('tr');
     row.innerHTML = '<td>' + x + '</td>';
@@ -739,7 +698,6 @@ function showScreen(screenNumber) {
 
   document.getElementById(`screen${screenNumber}`).style.display = 'block';
 }
-
 
 function createChild(parentId, childTag, innerHtml) {
   const parent = document.getElementById(parentId);
@@ -788,9 +746,7 @@ function populateMELsTable() {
     return;
   }
 
-
-
- if (!fltRls || !fltRls.MELs || fltRls.MELs.length === 0) {
+  if (!fltRls || !fltRls.MELs || fltRls.MELs.length === 0) {
     // Add a single row with one full-width "None" cell
     const row = table.insertRow();
     const cell = row.insertCell();
@@ -842,9 +798,9 @@ function displayWeather() {
       if (type === 'dep' && fltRls.AuthDep && fltRls.AuthDep[1]) {
         h3.textContent = `${icao} - ${displayName} ${fltRls.AuthDep[1]}`;
       } 
-	  else if (type === 'arr' && fltRls.ETA && fltRls.ETA[2]) {
+      else if (type === 'arr' && fltRls.ETA && fltRls.ETA[2]) {
         h3.textContent = `${icao} - ${displayName} ${fltRls.ETA[2]}`;
-      }else {
+      } else {
         h3.textContent = `${icao} - ${displayName}`;
       }
       airfieldDiv.appendChild(h3);
@@ -909,19 +865,39 @@ function displayNOTAMS() {
     console.error('Container element "notamsDisplay" not found.');
     return;
   }
+
+  // Track open state of details elements before clearing
+  const openDetails = new Set();
+  document.querySelectorAll('#notamsDisplay details[open]').forEach(details => {
+    const summary = details.querySelector('summary');
+    if (summary) {
+      openDetails.add(summary.textContent);
+    }
+  });
+
   container.innerHTML = '';
 
   const notamsByICAO = {};
   fltRls.notams.forEach(notam => {
     const icao = notam.parentICAO;
-    const category = notam.category || 'UNCATEGORISED';
+    const originalCategory = notam.category || 'UNCATEGORISED';
+    
+    // Add to original category
     if (!notamsByICAO[icao]) {
       notamsByICAO[icao] = {};
     }
-    if (!notamsByICAO[icao][category]) {
-      notamsByICAO[icao][category] = [];
+    if (!notamsByICAO[icao][originalCategory]) {
+      notamsByICAO[icao][originalCategory] = [];
     }
-    notamsByICAO[icao][category].push(notam);
+    notamsByICAO[icao][originalCategory].push(notam);
+
+    // If selected, also add to SELECTED category
+    if (notam.selected) {
+      if (!notamsByICAO[icao]['SELECTED']) {
+        notamsByICAO[icao]['SELECTED'] = [];
+      }
+      notamsByICAO[icao]['SELECTED'].push(notam);
+    }
   });
 
   for (const icao in notamsByICAO) {
@@ -933,17 +909,32 @@ function displayNOTAMS() {
     heading.textContent = `${icao} - ${parentName}`;
     icaoGroup.appendChild(heading);
 
-    for (const category in notamsByICAO[icao]) {
+    // Define category order, with SELECTED at the top
+    const categoryOrder = ['SELECTED', ...Object.keys(notamsByICAO[icao]).filter(cat => cat !== 'SELECTED')];
+
+    for (const category of categoryOrder) {
+      if (!notamsByICAO[icao][category]) continue; // Skip if category doesn't exist
       const details = document.createElement('details');
+      if (category === 'SELECTED') {
+        details.className = 'selected-category';
+        details.style.display = notamsByICAO[icao][category].length > 0 ? 'block' : 'none';
+      }
+      // Restore open state if previously open
+      if (openDetails.has(category)) {
+        details.setAttribute('open', '');
+      }
       const summary = document.createElement('summary');
       summary.textContent = category;
       details.appendChild(summary);
 
       const categoryContainer = document.createElement('div');
       categoryContainer.className = 'notam-category';
-      notamsByICAO[icao][category].forEach(notam => {
+      notamsByICAO[icao][category].forEach((notam, index) => {
         const notamDiv = document.createElement('div');
         notamDiv.className = 'notam-item';
+        if (notam.selected) {
+          notamDiv.classList.add('selected');
+        }
         
         const pBody = document.createElement('p');
         pBody.innerHTML = `<strong>${notam.ID}</strong> - ${trimLines(notam.body)}`;
@@ -957,6 +948,16 @@ function displayNOTAMS() {
         notamDiv.appendChild(pBody);
         notamDiv.appendChild(pEffective);
         notamDiv.appendChild(pExpires);
+
+        // Add click event listener to toggle selection
+        notamDiv.addEventListener('click', () => {
+          notam.selected = !notam.selected; // Toggle selected state
+          notamDiv.classList.toggle('selected', notam.selected); // Update visual highlight
+          console.log(`NOTAM ${notam.ID} selected: ${notam.selected}`);
+          // Re-render NOTAMs to update category placement
+          displayNOTAMS();
+        });
+
         categoryContainer.appendChild(notamDiv);
       });
       details.appendChild(categoryContainer);
@@ -967,7 +968,6 @@ function displayNOTAMS() {
 }
 
 function showHideWx() {
-	
     const weatherDiv = document.getElementById("weather");
     weatherDiv.style.display = weatherDiv.style.display === "none" ? "block" : "none";
 }
