@@ -190,7 +190,6 @@ details {
 }
 
 details:not([open]) {
-  max-height: 30px; /* Matches approximate height of summary */
   opacity: 1;
 }
 
