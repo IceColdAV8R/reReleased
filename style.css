@@ -2,22 +2,22 @@
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-body{
+body {
   background-color: #85929e;
 }
 
-h1, h3{
+h1, h3 {
   text-align: center;
-  margin-top:0;
-  margin-bottom:0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 #topBox {
   position: fixed;
-  left:0;
-  top:0;
+  left: 0;
+  top: 0;
   background-color: #13415f;
-  width:100%;
+  width: 100%;
 }
 #navBar {
   position: fixed;
@@ -56,7 +56,7 @@ h1, h3{
 }
 #clock, #fltNum {
   text-align: center;
-  margin:5px;
+  margin: 5px;
   color: white;
 }
 #fltNum {
@@ -68,63 +68,63 @@ h1, h3{
 
 #debugDiv {
   border-style: solid;
-  margin:20px;
-  padding:10px;
+  margin: 20px;
+  padding: 10px;
 }
-#sceneSpace{
-  position:fixed;
+#sceneSpace {
+  position: fixed;
   top: 70px;
-  left:0;
-  bottom:100px;
+  left: 0;
+  bottom: 100px;
   width: 100%;
-  overflow:auto;
+  overflow: auto;
 }
 
-#crew{
-  margin:auto;
-  color:white;
-  background-color:#1a5276;
+#crew {
+  margin: auto;
+  color: white;
+  background-color: #1a5276;
 }
 
-#fltDetailsA{
-  color:white;
-  background-color:#1a5276;
-  border-radius:20px;
+#fltDetailsA {
+  color: white;
+  background-color: #1a5276;
+  border-radius: 20px;
   padding: 5px;
-  margin:auto;
+  margin: auto;
   max-width: 50%;
-  margin-bottom:20px;
-  margin-top:20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }	
 
-.defaultBox{
-  color:white;
-  background-color:#1a5276;
-  border-radius:20px;
+.defaultBox {
+  color: white;
+  background-color: #1a5276;
+  border-radius: 20px;
   padding: 5px;
-  margin:auto;
+  margin: auto;
   max-width: 95%;
-  margin-bottom:20px;
-  margin-top:20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
-.defaultBox h1{
+.defaultBox h1 {
   font-size: 1.5em;
 }
 
-#MELs{
+#MELs {
   border-collapse: collapse;
-  margin:auto;
-  color:white;
+  margin: auto;
+  color: white;
   margin-top: 20px; 
   margin-bottom: 20px;
-  background-color:#1a5276;
-  border-radius:20px;
+  background-color: #1a5276;
+  border-radius: 20px;
 }
 
-#MELs th{
-  color:white;
-  padding:5px;
+#MELs th {
+  color: white;
+  padding: 5px;
   border-collapse: collapse;
 }
 
@@ -133,10 +133,10 @@ h1, h3{
   border-collapse: collapse;
 }
 
-#MELs td{
+#MELs td {
   border-collapse: collapse;
-  padding:5px;
-  color:white;
+  padding: 5px;
+  color: white;
 }
 
 #remarks {
@@ -147,27 +147,27 @@ h1, h3{
   border-style: solid;
   margin-left: 10px;
   margin-right: 10px;
-  padding:5px;
+  padding: 5px;
 }
 
-#depMETAR{
-  margin-top:0;
-  margin-bottom:0;
+#depMETAR {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-.airfield-weather p{
+.airfield-weather p {
   margin: 10px;
   color: white;
 }
-.airfield-weather h3{
+.airfield-weather h3 {
   color: white;
 }
 
 .airfield-weather {
   background-color: #1a5276;
-  padding:10px;
-  margin:10px;
-  border-radius:20px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 20px;
 }
 
 .icao-group {
@@ -184,10 +184,32 @@ h1, h3{
 
 details {
   margin: 5px 0;
+  transition: max-height 1.0s ease-out, opacity 1.0s ease-out;
+  max-height: 1000px; /* Arbitrary large value to allow expansion */
+  overflow: hidden;
+}
+
+details:not([open]) {
+  max-height: 30px; /* Matches approximate height of summary */
+  opacity: 1;
+}
+
+details[open] {
+  max-height: 1000px; /* Adjust based on content size */
+  opacity: 1;
 }
 
 details.selected-category {
-  display: none; /* Hidden by default, shown via JS when not empty */
+  display: block;
+  opacity: 0;
+  max-height: 0;
+  transition: opacity 1.0s ease-out, max-height 1.0s ease-out;
+  overflow: hidden;
+}
+
+details.selected-category[style*="display: block"] {
+  opacity: 1;
+  max-height: 1000px; /* Adjust based on content size */
 }
 
 summary {
