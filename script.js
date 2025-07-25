@@ -953,7 +953,6 @@ function displayNOTAMS() {
         notamDiv.addEventListener('click', () => {
           notam.selected = !notam.selected; // Toggle selected state
           notamDiv.classList.toggle('selected', notam.selected); // Update visual highlight
-          console.log(`NOTAM ${notam.ID} selected: ${notam.selected}`);
           // Re-render NOTAMs to update category placement
           displayNOTAMS();
         });
@@ -966,7 +965,6 @@ function displayNOTAMS() {
     container.appendChild(icaoGroup);
   }
 }
-
 function showHideWx() {
     const weatherDiv = document.getElementById("weather");
     weatherDiv.style.display = weatherDiv.style.display === "none" ? "block" : "none";
