@@ -518,8 +518,8 @@ function getWeather(icao) {
   );
   var tafRgx = new RegExp('(?:TAF)(?:\\sAMD)?\\s{2}' + icao + '.*?(?=TAF)');
   var tafSubRgx =
-    /(?:(BECMG|PROB\d{2}|TEMPO)\s(\d{4})\/(\d{4})|FM(\d{6}))(.*?)(?=FM|BECMG|PROB|TEMPO|$)/g;
-  var tafMainRgx = /TAF.*?(\d{6})Z\s(\d{4})\/(\d{4}).*?(?=FM|BECMG|TEMPO|PROB)/;
+    /(?:(BECMG|PROB\d{2}|TEMPO)\s(\d{4})\/(\d{4})|FM(\d{6}))(.*?)(?=FM|BECMG|PROB|TEMPO|TAF|$)/g;
+  var tafMainRgx = /TAF.*?(\d{6})Z\s(\d{4})\/(\d{4}).*?(?=FM|BECMG|TEMPO|PROB|$)/;
   var metarText = textContent.match(metarRgx);
   var tafText = textContent.match(tafRgx);
   var tafBody = tafText[0].match(tafMainRgx);
