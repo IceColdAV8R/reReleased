@@ -184,7 +184,7 @@ h1, h3 {
 
 details {
   margin: 5px 0;
-  transition: max-height 1.0s ease-out, opacity 1.0s ease-out;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
   max-height: 1000px; /* Arbitrary large value to allow expansion */
   overflow: hidden;
 }
@@ -203,7 +203,7 @@ details.selected-category {
   display: block;
   opacity: 0;
   max-height: 0;
-  transition: opacity 1.0s ease-out, max-height 1.0s ease-out;
+  transition: opacity 0.3s ease-out, max-height 0.3s ease-out;
   overflow: hidden;
 }
 
@@ -211,6 +211,12 @@ details.selected-category[style*="display: block"] {
   opacity: 1;
   max-height: 1000px; /* Adjust based on content size */
 }
+
+details.selected-category summary {
+  color: #b9770e; /* Orangish color for SELECTED category title */
+}
+
+
 
 summary {
   cursor: pointer;
