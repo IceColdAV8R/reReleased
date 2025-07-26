@@ -235,6 +235,8 @@ function loadRelease() {
       loopHelp = false;
     }
   }
+  fltRls.depDate = parseDateTime(fltRls.AuthDep[0],fltRls.AuthDep[1])
+  fltRls.arrDate = parseDateTime(fltRls.ETA[1],fltRls.ETA[2])
   var rmksRegex = /REMARKS:.*?DESK\s\d{1,3}/
   var remarks = textContent.match(rmksRegex)[0]
   fltRls.remarks = remarks.replaceAll(/\s+/g," ")
@@ -1062,4 +1064,55 @@ function createNavLogTable() {
     remFuelCell.textContent = waypoint[24];
   });
   screen5.appendChild(table);
+}
+
+function parseDateTime(dateStr, timeStr) {
+  // Ensure inputs are strings and have correct lengths
+  if (typeof dateStr !== 'string' || typeof timeStr !== 'string') {
+    throw new Error('Inputs must be strings');
+  }
+  if (dateStr.length !== 7 || timeStr.length !== 5) {
+    throw new Error('Invalid format: Date must be DDMMMYY, Time must be HHMMZ');
+  }
+
+  // Extract date components
+  const day = dateStr.slice(0, 2);
+  const monthStr = dateStr.slice(2, 5);
+  const year = '20' + dateStr.slice(5, 7); // Assuming 20XX years
+
+  // Map month abbreviations to numbers
+  const monthMap = {
+    'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04', 'MAY': '05', 'JUN': '06',
+    'JUL': '07', 'AUG': '08', 'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
+  };
+  const month = monthMap[monthStr.toUpperCase()];
+  if (!month) {
+    throw new Error('Invalid month abbreviation');
+  }
+
+  // Extract time components
+  const hours = timeStr.slice(0, 2);
+  const minutes = timeStr.slice(2, 4);
+  const timezone = timeStr.slice(4, 5);
+
+  // Validate timezone (assuming Z for UTC)
+  if (timezone !== 'Z') {
+    throw new Error('Only UTC (Z) timezone is supported');
+  }
+
+  // Validate numeric components
+  if (!/^\d{2}$/.test(day) || !/^\d{2}$/.test(hours) || !/^\d{2}$/.test(minutes)) {
+    throw new Error('Day, hours, or minutes must be two digits');
+  }
+
+  // Create ISO string and parse to Date object
+  const isoString = `${year}-${month}-${day}T${hours}:${minutes}:00Z`;
+  const dateObj = new Date(isoString);
+
+  // Check if the date is valid
+  if (isNaN(dateObj.getTime())) {
+    throw new Error('Invalid date or time');
+  }
+
+  return dateObj;
 }
