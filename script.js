@@ -919,10 +919,7 @@ function displayNOTAMS() {
         details.className = 'selected-category';
         details.style.display = notamsByICAO[icao][category].length > 0 ? 'block' : 'none';
       }
-      // Restore open state if previously open
-      if (openDetails.has(category)) {
-        details.setAttribute('open', '');
-      }
+
       const summary = document.createElement('summary');
       summary.textContent = category;
       details.appendChild(summary);
@@ -953,8 +950,7 @@ function displayNOTAMS() {
         notamDiv.addEventListener('click', () => {
           notam.selected = !notam.selected; // Toggle selected state
           notamDiv.classList.toggle('selected', notam.selected); // Update visual highlight
-          // Re-render NOTAMs to update category placement
-          displayNOTAMS();
+
         });
 
         categoryContainer.appendChild(notamDiv);
