@@ -243,6 +243,7 @@ function loadRelease() {
   loadTakeoffData();
   loadNOTAMS();
   loadWeather();
+  setActiveWeather();
 
   displayRelease();
 }
@@ -821,6 +822,10 @@ function displayWeather() {
         const tafP = document.createElement('p');
         const tafCode = document.createElement('code');
         tafCode.textContent = airfield.taf.text;
+        // Highlight if TAF is active
+        if (airfield.taf.active) {
+          tafP.className = 'active-forecast';
+        }
         tafP.appendChild(tafCode);
         airfieldDiv.appendChild(tafP);
 
@@ -832,6 +837,10 @@ function displayWeather() {
             const subP = document.createElement('p');
             const subCode = document.createElement('code');
             subCode.textContent = sub.text;
+            // Highlight if sub is active
+            if (sub.active) {
+              subCode.className = 'active-forecast';
+            }
             subP.appendChild(subCode);
             subsDiv.appendChild(subP);
           });
@@ -1115,4 +1124,44 @@ function parseDateTime(dateStr, timeStr) {
   }
 
   return dateObj;
+}
+
+function setActiveWeather() {
+    const arrDate = fltRls.arrDate;
+    const taf = fltRls.weather.arr.taf;
+
+    // Check if arrDate is within TAF's main time range
+    const isTafActive = arrDate >= taf.begin && (!taf.end || arrDate <= taf.end);
+
+    // Initialize active as false
+    taf.active = false;
+
+    // Check subs array if it exists
+    if (taf.subs && taf.subs.length > 0) {
+        let activeSubFound = false;
+
+        // Iterate through subs to find the most specific active forecast
+        for (const sub of taf.subs) {
+            // Initialize active property for sub
+            sub.active = false;
+
+            // Check if arrDate falls within sub's time range
+            const isSubActive = arrDate >= sub.begin && (!sub.end || arrDate <= sub.end);
+
+            if (isSubActive) {
+                sub.active = true;
+                activeSubFound = true;
+            }
+        }
+
+        // If no active sub is found, set TAF active if within its range
+        if (!activeSubFound && isTafActive) {
+            taf.active = true;
+        }
+    } else {
+        // No subs, set TAF active if within its range
+        taf.active = isTafActive;
+    }
+
+    return taf;
 }
