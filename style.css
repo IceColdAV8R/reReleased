@@ -286,3 +286,8 @@ summary {
   vertical-align: middle;
   font-weight: bold;
 }
+
+.active-forecast {
+  background-color: #b9770e; /* Light cyan background for active forecast */
+
+}
