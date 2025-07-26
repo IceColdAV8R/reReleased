@@ -54,6 +54,12 @@ h1, h3 {
   font-weight: 600;
   cursor: pointer;
 }
+
+#notamButton {
+	margin:auto;
+	display:block;
+	margin-top:5px;
+}
 #clock, #fltNum {
   text-align: center;
   margin: 5px;
@@ -185,7 +191,6 @@ h1, h3 {
 details {
   margin: 5px 0;
   transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-  max-height: 1000px; /* Arbitrary large value to allow expansion */
   overflow: hidden;
 }
 
@@ -194,7 +199,6 @@ details:not([open]) {
 }
 
 details[open] {
-  max-height: 1000px; /* Adjust based on content size */
   opacity: 1;
 }
 
