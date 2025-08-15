@@ -243,7 +243,7 @@ function loadRelease() {
   loadTakeoffData();
   loadNOTAMS();
   loadWeather();
-  setActiveWeather();
+  //setActiveWeather();
 
   displayRelease();
 }
@@ -1040,9 +1040,6 @@ function createNavLogTable() {
     const row1 = table.insertRow();
     const nameCell = row1.insertCell();
     const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.style.marginRight = '5px';
-    nameCell.appendChild(checkbox);
     nameCell.appendChild(document.createTextNode(waypoint[1]));
     nameCell.rowSpan = 3;
     const legLabelCell = row1.insertCell();
@@ -1071,6 +1068,33 @@ function createNavLogTable() {
     remTimeCell.textContent = waypoint[23];
     const remFuelCell = row3.insertCell();
     remFuelCell.textContent = waypoint[24];
+	//New Row
+	const row4 = table.insertRow();
+	const spacerCell2 = row4.insertCell();
+	const expLabelCell = row4.insertCell();
+	expLabelCell.textContent = "EXPECTED ->";
+	expLabelCell.colSpan = 2;
+	const expTime = row4.insertCell();
+	const expFuel = row4.insertCell();
+	//New row
+const row5 = table.insertRow();
+const spacerCell = row5.insertCell();
+const actLabelCell = row5.insertCell();
+actLabelCell.textContent = "ACTUAL ->";
+actLabelCell.colSpan = 2;
+const actTime = row5.insertCell();
+const actTimeInput = document.createElement('input');
+actTimeInput.setAttribute('type', 'text');
+actTimeInput.setAttribute('name', 'actTime');
+actTimeInput.setAttribute('class','tableInput')
+actTime.appendChild(actTimeInput);
+const actFuel = row5.insertCell();
+const actFuelInput = document.createElement('input');
+actFuelInput.setAttribute('type', 'text');
+actFuelInput.setAttribute('name', 'actFuel');
+actFuelInput.setAttribute('class','tableInput')
+actFuel.appendChild(actFuelInput);
+	
   });
   screen5.appendChild(table);
 }
