@@ -53,6 +53,7 @@ h1, h3 {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+	    max-width: 90%;
 }
 
 #notamButton {
