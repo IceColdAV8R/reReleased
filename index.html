@@ -25,9 +25,10 @@
       </h1>
     </div>
     <div id="sceneSpace">
-      <div id="debugDiv">
-        <input type="file" id="pdfInput" accept="application/pdf">
-        <button onclick="loadCachedPDF()">
+      <div id="debugDiv" class="defaultBox">
+        <input type="file" id="pdfInput" accept="application/pdf" class="navButton">
+		<br>
+        <button onclick="loadCachedPDF()" class="navButton">
           Load Release
         </button>
 
@@ -82,9 +83,14 @@
 	  <div id="notamsDisplay"></div>
 	  </div>
 	  <div id="screen4" class="screen" style='display:none'>
-	  <iframe src="https://globe.adsbexchange.com/?hideSideBar?mapDim=0?zoom=1"  width="100%" id="traffic" frameborder="0" style="border:0;" allow="geolocation" allowfullscreen></iframe>
+	  <iframe src="https://globe.adsbexchange.com/?hideSideBar&mapDim=0&zoom=15"  width="100%" id="traffic" frameborder="0" style="border:0;" allow="geolocation" allowfullscreen></iframe>
 	  </div>
 	  <div id="screen5" class="screen" style='display:none'>
+	  <div id="ODFuelEntry" class="defaultBox">
+	  <label> Off Deck Fuel </label>
+	  <input type="number" id="ODFuelField">
+	  <button class="navButton"> Calculate </button>
+	  </div>
 	  </div>
 	  </div>
           
