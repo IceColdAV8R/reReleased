@@ -73,9 +73,14 @@ h1, h3 {
 }
 
 #debugDiv {
-  border-style: solid;
   margin: 20px;
   padding: 10px;
+}
+
+#debugDiv > * {
+	margin:auto;
+	text-align:center;
+	display:block;
 }
 #sceneSpace {
   position: fixed;
@@ -112,6 +117,7 @@ h1, h3 {
   max-width: 95%;
   margin-bottom: 20px;
   margin-top: 20px;
+    border-style: solid;
 }
 
 .defaultBox h1 {
@@ -275,11 +281,15 @@ summary {
 }
 
 /* Alternating background for all cells in the three rows of every other waypoint */
-#screen5 tr:nth-child(6n-4),
-#screen5 tr:nth-child(6n-3),
-#screen5 tr:nth-child(6n-2) {
+#screen5 tr:nth-child(10n-8),
+#screen5 tr:nth-child(10n-7),
+#screen5 tr:nth-child(10n-6),
+#screen5 tr:nth-child(10n-5),
+#screen5 tr:nth-child(10n-4) {
   background-color: #b9770e; /* Matches MELs alternating row color */
 }
+
+
 
 /* Ensure the waypoint name cell (spanning 3 rows) aligns properly */
 #screen5 td[rowspan="3"] {
@@ -290,4 +300,16 @@ summary {
 .active-forecast {
   background-color: #b9770e; /* Light cyan background for active forecast */
 
+}
+
+#ODFuelEntry * {
+	display:block;
+	margin:auto;
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+.tableInput {
+	width:50px;
 }
