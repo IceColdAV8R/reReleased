@@ -53,7 +53,7 @@ h1, h3 {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-	    max-width: 90%;
+  max-width: 90%;
 }
 
 #notamButton {
@@ -282,11 +282,12 @@ summary {
 }
 
 /* Alternating background for all cells in the three rows of every other waypoint */
-#screen5 tr:nth-child(10n-8),
-#screen5 tr:nth-child(10n-7),
-#screen5 tr:nth-child(10n-6),
-#screen5 tr:nth-child(10n-5),
-#screen5 tr:nth-child(10n-4) {
+#screen5 tr:nth-child(12n-10),
+#screen5 tr:nth-child(12n-9),
+#screen5 tr:nth-child(12n-8),
+#screen5 tr:nth-child(12n-7),
+#screen5 tr:nth-child(12n-6),
+#screen5 tr:nth-child(12n-5) {
   background-color: #b9770e; /* Matches MELs alternating row color */
 }
 
@@ -313,4 +314,8 @@ summary {
 
 .tableInput {
 	width:50px;
+}
+
+.fuelLog{
+	display:none;
 }
