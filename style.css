@@ -183,6 +183,11 @@ h1, h3 {
   border-radius: 20px;
 }
 
+.airfield-weather .selected {
+  background-color: #b9770e;
+  cursor: pointer;
+}
+
 .icao-group {
   background-color: #1a5276;
   color: white;
