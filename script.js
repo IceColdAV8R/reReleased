@@ -1044,21 +1044,22 @@ function createNavLogTable() {
     console.error('screen5 div not found');
     return;
   }
-  const table = document.createElement('table');
-  const headerRow = table.insertRow();
-  const headers = ['WPT', '-', 'DIST', 'TIME', 'FUEL'];
-  headers.forEach(headerText => {
-    const th = document.createElement('th');
-    th.textContent = headerText;
-    headerRow.appendChild(th);
-  });
   fltRls.NavLog.forEach(waypoint => {
+    const table = document.createElement('table');
+    const headerRow = table.insertRow();
+    const headerCell = headerRow.insertCell();
+    headerCell.colSpan = 4;
+    headerCell.textContent = waypoint[1];
+    headerCell.onclick = () => showFuelLog(waypoint[1]);
+    const subHeaderRow = table.insertRow();
+    subHeaderRow.insertCell();
+    const distSub = subHeaderRow.insertCell();
+    distSub.textContent = 'DIST';
+    const timeSub = subHeaderRow.insertCell();
+    timeSub.textContent = 'TIME';
+    const fuelSub = subHeaderRow.insertCell();
+    fuelSub.textContent = 'FUEL';
     const row1 = table.insertRow();
-    const nameCell = row1.insertCell();
-    const checkbox = document.createElement('input');
-    nameCell.appendChild(document.createTextNode(waypoint[1]));
-    nameCell.rowSpan = 3;
-	nameCell.onclick = () => showFuelLog(waypoint[1]);
     const legLabelCell = row1.insertCell();
     legLabelCell.textContent = 'LEG';
     const legDistCell = row1.insertCell();
@@ -1085,19 +1086,15 @@ function createNavLogTable() {
     remTimeCell.textContent = waypoint[23];
     const remFuelCell = row3.insertCell();
     remFuelCell.textContent = waypoint[24];
-	//New Row
 	const row4 = table.insertRow();
 	row4.setAttribute('class','fuelLog '+waypoint[1]+'fuelLog');
-	const spacerCell = row4.insertCell();
 	const expLabelCell = row4.insertCell();
 	expLabelCell.textContent = "EXPECTED ->";
 	expLabelCell.colSpan = 2;
 	const expTime = row4.insertCell();
 	const expFuel = row4.insertCell();
-	//New row
 	const row5 = table.insertRow();
-	row5.setAttribute('class','fuelLog ${waypoint[1]}fuelLog');
-	const spacerCell2 = row5.insertCell();
+	row5.setAttribute('class','fuelLog '+waypoint[1]+'fuelLog');
 	const actLabelCell = row5.insertCell();
 	actLabelCell.textContent = "ACTUAL ->";
 	actLabelCell.colSpan = 2;
@@ -1113,17 +1110,15 @@ function createNavLogTable() {
 	actFuelInput.setAttribute('name', 'actFuel');
 	actFuelInput.setAttribute('class','tableInput')
 	actFuel.appendChild(actFuelInput);
-	//New row
 	const row6 = table.insertRow();
 	row6.setAttribute('class','fuelLog '+waypoint[1]+'fuelLog');
-	const spacerCell3 = row6.insertCell()
 	const difLabelCell = row6.insertCell();
 	difLabelCell.textContent = "DIFFERENCE ->"
 	difLabelCell.colSpan = 2;
 	const difTime = row6.insertCell();
 	const difFuel = row6.insertCell();
+    screen5.appendChild(table);
   });
-  screen5.appendChild(table);
 }
 
 function parseDateTime(dateStr, timeStr) {
