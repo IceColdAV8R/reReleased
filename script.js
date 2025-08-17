@@ -527,17 +527,20 @@ function getWeather(icao) {
       tafSub.begin = parseDDHH(match[4]);
       tafSub.end = null;
     }
+    tafSub.selected = false;
     tafSubs.push(tafSub);
   }
   var metar = {};
   metar.issued = parseDDHHMM(metarText[1]);
   metar.text = metarText[0];
+  metar.selected = false;
   var taf = {};
   taf.issued = parseDDHH(tafBody[1]);
   taf.begin = parseDDHH(tafBody[2]);
   taf.end = parseDDHH(tafBody[3]);
   taf.text = tafBody[0];
   taf.subs = tafSubs;
+  taf.selected = false;
  
   var wx = {};
   wx.metar = metar;
@@ -815,6 +818,11 @@ function displayWeather() {
         metarCode.textContent = airfield.metar.text;
         metarP.appendChild(metarCode);
         airfieldDiv.appendChild(metarP);
+        metarP.classList.toggle('selected', airfield.metar.selected);
+        metarP.addEventListener('click', () => {
+          airfield.metar.selected = !airfield.metar.selected;
+          metarP.classList.toggle('selected');
+        });
       }
 
       // Add TAF information
@@ -822,11 +830,15 @@ function displayWeather() {
         const tafP = document.createElement('p');
         const tafCode = document.createElement('code');
         tafCode.textContent = airfield.taf.text;
-        // Highlight if TAF is active
-        if (airfield.taf.active) {
-          tafP.className = 'active-forecast';
-        }
         tafP.appendChild(tafCode);
+        if (airfield.taf.active) {
+          tafP.classList.add('active-forecast');
+        }
+        tafP.classList.toggle('selected', airfield.taf.selected);
+        tafP.addEventListener('click', () => {
+          airfield.taf.selected = !airfield.taf.selected;
+          tafP.classList.toggle('selected');
+        });
         airfieldDiv.appendChild(tafP);
 
         // Add TAF sub forecasts if they exist
@@ -837,11 +849,15 @@ function displayWeather() {
             const subP = document.createElement('p');
             const subCode = document.createElement('code');
             subCode.textContent = sub.text;
-            // Highlight if sub is active
-            if (sub.active) {
-              subCode.className = 'active-forecast';
-            }
             subP.appendChild(subCode);
+            if (sub.active) {
+              subP.classList.add('active-forecast');
+            }
+            subP.classList.toggle('selected', sub.selected);
+            subP.addEventListener('click', () => {
+              sub.selected = !sub.selected;
+              subP.classList.toggle('selected');
+            });
             subsDiv.appendChild(subP);
           });
           airfieldDiv.appendChild(subsDiv);
