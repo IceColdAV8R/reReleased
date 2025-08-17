@@ -261,7 +261,6 @@ summary {
 
 /* Navigation Log Table Styling */
 #screen5 table {
-  border-collapse: collapse;
   margin: auto;
   color: white;
   background-color: #1a5276;
@@ -269,7 +268,6 @@ summary {
   padding: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 95%;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -286,23 +284,6 @@ summary {
   border: none;
 }
 
-/* Alternating background for all cells in the three rows of every other waypoint */
-#screen5 tr:nth-child(12n-10),
-#screen5 tr:nth-child(12n-9),
-#screen5 tr:nth-child(12n-8),
-#screen5 tr:nth-child(12n-7),
-#screen5 tr:nth-child(12n-6),
-#screen5 tr:nth-child(12n-5) {
-  background-color: #b9770e; /* Matches MELs alternating row color */
-}
-
-
-
-/* Ensure the waypoint name cell (spanning 3 rows) aligns properly */
-#screen5 td[rowspan="3"] {
-  vertical-align: middle;
-  font-weight: bold;
-}
 
 .active-forecast {
   background-color: #b9770e; /* Light cyan background for active forecast */
@@ -321,6 +302,9 @@ summary {
 	width:50px;
 }
 
-.fuelLog{
-	display:none;
+
+
+#screen5 td[rowspan="3"] {
+  vertical-align: middle;
+  font-weight: bold;
 }
