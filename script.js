@@ -1110,7 +1110,7 @@ function createNavLogTable() {
 	const r1c5 = t2r1.insertCell();
 	r1c5.textContent = "-"
 	const r1c6 = t2r1.insertCell();
-	r1c6.textContent = "Difference";
+	r1c6.textContent = "Δ";
 	//row 2
 	const t2r2 = table2.insertRow();
 	const r2c1 = t2r2.insertCell();
