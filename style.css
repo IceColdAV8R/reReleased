@@ -54,6 +54,7 @@ h1, h3 {
   font-weight: 600;
   cursor: pointer;
   max-width: 90%;
+  min-width:30px;
 }
 
 #notamButton {
@@ -265,9 +266,7 @@ summary {
   color: white;
   background-color: #1a5276;
   border-radius: 20px;
-  padding: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -282,20 +281,47 @@ summary {
   color: white;
   text-align: center;
   border: none;
+  padding-left:10px;
+  padding-right:10px;
 }
 
+#screen5 tr td:first-child {
+	text-align:left;
+}
+
+#screen5 div p{
+	text-align:center;
+}
+
+#screen5 div .navButton{
+	margin:auto;
+	display:block;
+}
 
 .active-forecast {
   background-color: #b9770e; /* Light cyan background for active forecast */
 
 }
 
-#ODFuelEntry * {
+#ODFuelEntry label {
 	display:block;
 	margin:auto;
 	text-align:center;
 	margin-top:5px;
 	margin-bottom:5px;
+}
+
+#ODFuelEntry p {
+	display:block;
+	margin:auto;
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+
+#ODFuelEntry button {
+	
 }
 
 .tableInput {
