@@ -1168,33 +1168,45 @@ function createNavLogTable() {
   });
   updateFuelLogValues()
   
-  document.getElementById('screen5').addEventListener('click', function(event) {
-  if (event.target.tagName !== 'BUTTON') return;
+document.getElementById('screen5').addEventListener('click', function(event) {
+  const target = event.target;
   
-  const buttonId = event.target.id;
+  if (target.tagName === 'BUTTON') {
+    const buttonId = target.id;
 
-  // Handle odfUp and odfDwn buttons for actTOFuel
-  if (buttonId === 'odfUp') {
-    fltRls.fuelLog.actTOFuel += 100;
-  } else if (buttonId === 'odfDwn') {
-    fltRls.fuelLog.actTOFuel -= 100;
-  } else {
-    // Handle waypoint-specific buttons
-    const waypoint = buttonId.replace(/timeUp|timeDwn|fuelUp|fuelDwn$/, '');
+    // Handle odfUp and odfDwn buttons for actTOFuel
+    if (buttonId === 'odfUp') {
+      fltRls.fuelLog.actTOFuel += 100;
+    } else if (buttonId === 'odfDwn') {
+      fltRls.fuelLog.actTOFuel -= 100;
+    } else {
+      // Handle waypoint-specific buttons
+      const waypoint = buttonId.replace(/timeUp|timeDwn|fuelUp|fuelDwn$/, '');
+      const wpt = fltRls.fuelLog.wpts.find(w => w.name === waypoint);
+      if (!wpt) return;
+
+      if (buttonId.endsWith('timeUp')) {
+        wpt.actTime += 1;
+      } else if (buttonId.endsWith('timeDwn')) {
+        wpt.actTime -= 1;
+      } else if (buttonId.endsWith('fuelUp')) {
+        wpt.actFuel += 10;
+      } else if (buttonId.endsWith('fuelDwn')) {
+        wpt.actFuel -= 10;
+      }
+    }
+    updateFuelLogValues();
+  } else if (target.tagName === 'TD' && target.id.endsWith('actFuel')) {
+    const waypoint = target.id.replace('actFuel', '');
     const wpt = fltRls.fuelLog.wpts.find(w => w.name === waypoint);
     if (!wpt) return;
 
-    if (buttonId.endsWith('timeUp')) {
-      wpt.actTime += 1;
-    } else if (buttonId.endsWith('timeDwn')) {
-      wpt.actTime -= 1;
-    } else if (buttonId.endsWith('fuelUp')) {
-      wpt.actFuel += 10;
-    } else if (buttonId.endsWith('fuelDwn')) {
-      wpt.actFuel -= 10;
+    const newFuel = prompt("Enter actual fuel:");
+    if (newFuel !== null && !isNaN(parseInt(newFuel))) {
+      wpt.actFuel = parseInt(newFuel);
+      updateFuelLogValues();
     }
   }
-  updateFuelLogValues();
 });
 }
 
