@@ -227,6 +227,8 @@ function loadRelease() {
   loopHelp = true;
   fltRls.NavLog = [];
 
+
+
   while (loopHelp) {
     matchBox = navLog.exec(textContent);
     if (matchBox != null) {
@@ -240,6 +242,7 @@ function loadRelease() {
   var rmksRegex = /REMARKS:.*?DESK\s\d{1,3}/
   var remarks = textContent.match(rmksRegex)[0]
   fltRls.remarks = remarks.replaceAll(/\s+/g," ")
+    createFuelLog();
   loadTakeoffData();
   loadNOTAMS();
   loadWeather();
@@ -1045,80 +1048,154 @@ function createNavLogTable() {
     return;
   }
   fltRls.NavLog.forEach(waypoint => {
+    const div = document.createElement('div');
+    div.className = 'defaultBox';
+    const h1 = document.createElement('h1');
+    h1.textContent = waypoint[1];
+    div.appendChild(h1);
+	const p = document.createElement('p');
+	p.textContent = waypoint[3] + "/" + waypoint[12] + "kts";
+	div.appendChild(p);
     const table = document.createElement('table');
-    const headerRow = table.insertRow();
-    const headerCell = headerRow.insertCell();
-    headerCell.colSpan = 4;
-    headerCell.textContent = waypoint[1];
-    headerCell.onclick = () => showFuelLog(waypoint[1]);
-    const subHeaderRow = table.insertRow();
-    subHeaderRow.insertCell();
-    const distSub = subHeaderRow.insertCell();
-    distSub.textContent = 'DIST';
-    const timeSub = subHeaderRow.insertCell();
-    timeSub.textContent = 'TIME';
-    const fuelSub = subHeaderRow.insertCell();
-    fuelSub.textContent = 'FUEL';
     const row1 = table.insertRow();
     const legLabelCell = row1.insertCell();
     legLabelCell.textContent = 'LEG';
     const legDistCell = row1.insertCell();
-    legDistCell.textContent = waypoint[7];
+    legDistCell.textContent = waypoint[7].concat("nm");
     const legTimeCell = row1.insertCell();
     legTimeCell.textContent = waypoint[8];
     const legFuelCell = row1.insertCell();
-    legFuelCell.textContent = waypoint[9];
+    legFuelCell.textContent = waypoint[9].concat("lbs");
     const row2 = table.insertRow();
     const totLabelCell = row2.insertCell();
-    totLabelCell.textContent = 'TOT';
+    totLabelCell.textContent = 'TOTAL';
     const totDistCell = row2.insertCell();
-    totDistCell.textContent = waypoint[16];
+    totDistCell.textContent = waypoint[16].concat("nm");
     const totTimeCell = row2.insertCell();
     totTimeCell.textContent = waypoint[17];
     const totFuelCell = row2.insertCell();
-    totFuelCell.textContent = waypoint[18];
+    totFuelCell.textContent = waypoint[18].concat("lbs");
     const row3 = table.insertRow();
     const remLabelCell = row3.insertCell();
-    remLabelCell.textContent = 'REM';
+    remLabelCell.textContent = 'REMAIN';
     const remDistCell = row3.insertCell();
-    remDistCell.textContent = waypoint[22];
+    remDistCell.textContent = waypoint[22].concat("nm");
     const remTimeCell = row3.insertCell();
     remTimeCell.textContent = waypoint[23];
     const remFuelCell = row3.insertCell();
-    remFuelCell.textContent = waypoint[24];
-	const row4 = table.insertRow();
-	row4.setAttribute('class','fuelLog '+waypoint[1]+'fuelLog');
-	const expLabelCell = row4.insertCell();
-	expLabelCell.textContent = "EXPECTED ->";
-	expLabelCell.colSpan = 2;
-	const expTime = row4.insertCell();
-	const expFuel = row4.insertCell();
-	const row5 = table.insertRow();
-	row5.setAttribute('class','fuelLog '+waypoint[1]+'fuelLog');
-	const actLabelCell = row5.insertCell();
-	actLabelCell.textContent = "ACTUAL ->";
-	actLabelCell.colSpan = 2;
-	const actTime = row5.insertCell();
-	const actTimeInput = document.createElement('input');
-	actTimeInput.setAttribute('type', 'text');
-	actTimeInput.setAttribute('name', 'actTime');
-	actTimeInput.setAttribute('class','tableInput')
-	actTime.appendChild(actTimeInput);
-	const actFuel = row5.insertCell();
-	const actFuelInput = document.createElement('input');
-	actFuelInput.setAttribute('type', 'text');
-	actFuelInput.setAttribute('name', 'actFuel');
-	actFuelInput.setAttribute('class','tableInput')
-	actFuel.appendChild(actFuelInput);
-	const row6 = table.insertRow();
-	row6.setAttribute('class','fuelLog '+waypoint[1]+'fuelLog');
-	const difLabelCell = row6.insertCell();
-	difLabelCell.textContent = "DIFFERENCE ->"
-	difLabelCell.colSpan = 2;
-	const difTime = row6.insertCell();
-	const difFuel = row6.insertCell();
-    screen5.appendChild(table);
+    remFuelCell.textContent = waypoint[24].concat("lbs");
+    div.appendChild(table);
+    screen5.appendChild(div);
+	
+	    // Add Fuel Log button
+    const fuelLogButton = document.createElement('button');
+    fuelLogButton.textContent = 'Fuel Log';
+    fuelLogButton.className = 'navButton';
+	fuelLogButton.id = waypoint[1];
+    div.appendChild(fuelLogButton);
+	
+	//Add fuel log Table
+	const table2 = document.createElement('table');
+	table2.id = waypoint[1]+"fuelTable";
+	//row 1
+	const t2r1 = table2.insertRow();
+	const r1c1 = t2r1.insertCell();
+	r1c1.textContent = "-"
+	const r1c2 = t2r1.insertCell();
+	r1c2.textContent = "Expected";
+	const r1c3 = t2r1.insertCell();
+	r1c3.textContent = "Actual";
+	const r1c4 = t2r1.insertCell();
+	r1c4.textContent = "-"
+	const r1c5 = t2r1.insertCell();
+	r1c5.textContent = "-"
+	const r1c6 = t2r1.insertCell();
+	r1c6.textContent = "Difference";
+	//row 2
+	const t2r2 = table2.insertRow();
+	const r2c1 = t2r2.insertCell();
+	r2c1.textContent = "Time";
+	const r2c2 = t2r2.insertCell();
+	r2c2.textContent = "-";
+	r2c2.id = waypoint[1] + "expTime";
+	const r2c3 = t2r2.insertCell();
+	r2c3.textContent = "-";
+	r2c3.id = waypoint[1] + "actTime";
+	//timeUp button
+	const r2c4 = t2r2.insertCell();
+	const timeUpBtn = document.createElement("button");
+	timeUpBtn.className = "navButton";
+	timeUpBtn.textContent = "+";
+	timeUpBtn.id = waypoint[1]+"timeUp";
+	r2c4.appendChild(timeUpBtn);
+	//timeDown button
+	const r2c5 = t2r2.insertCell();
+	const timeDwnBtn = document.createElement("button");
+	timeDwnBtn.className = "navButton";
+	timeDwnBtn.textContent = "-";
+	timeDwnBtn.id = waypoint[1]+"timeDwn";
+	r2c5.appendChild(timeDwnBtn);
+	const r2c6 = t2r2.insertCell();
+	r2c6.id = waypoint[1]+"dTime";
+	div.appendChild(table2);
+	//row3
+	const t2r3 = table2.insertRow();
+	const r3c1 = t2r3.insertCell();
+	r3c1.textContent = "Fuel";
+	const r3c2 = t2r3.insertCell();
+	r3c2.textContent = "-";
+	r3c2.id = waypoint[1] + "expFuel";
+	const r3c3 = t2r3.insertCell();
+	r3c3.textContent = "-";
+	r3c3.id = waypoint[1] + "actFuel";
+	//fuelUp button
+	const r3c4 = t2r3.insertCell();
+	const fuelUpBtn = document.createElement("button");
+	fuelUpBtn.className = "navButton";
+	fuelUpBtn.textContent = "+";
+	fuelUpBtn.id = waypoint[1]+"fuelUp";
+	r3c4.appendChild(fuelUpBtn);
+	//fuelDown button
+	const r3c5 = t2r3.insertCell();
+	const fuelDwnBtn = document.createElement("button");
+	fuelDwnBtn.className = "navButton";
+	fuelDwnBtn.textContent = "-";
+	fuelDwnBtn.id = waypoint[1]+"fuelDwn";
+	r3c5.appendChild(fuelDwnBtn);
+	const r3c6 = t2r3.insertCell();
+	r3c6.id = waypoint[1]+"dFuel";
+	div.appendChild(table2);
   });
+  updateFuelLogValues()
+  
+  document.getElementById('screen5').addEventListener('click', function(event) {
+  if (event.target.tagName !== 'BUTTON') return;
+  
+  const buttonId = event.target.id;
+
+  // Handle odfUp and odfDwn buttons for actTOFuel
+  if (buttonId === 'odfUp') {
+    fltRls.fuelLog.actTOFuel += 100;
+  } else if (buttonId === 'odfDwn') {
+    fltRls.fuelLog.actTOFuel -= 100;
+  } else {
+    // Handle waypoint-specific buttons
+    const waypoint = buttonId.replace(/timeUp|timeDwn|fuelUp|fuelDwn$/, '');
+    const wpt = fltRls.fuelLog.wpts.find(w => w.name === waypoint);
+    if (!wpt) return;
+
+    if (buttonId.endsWith('timeUp')) {
+      wpt.actTime += 1;
+    } else if (buttonId.endsWith('timeDwn')) {
+      wpt.actTime -= 1;
+    } else if (buttonId.endsWith('fuelUp')) {
+      wpt.actFuel += 10;
+    } else if (buttonId.endsWith('fuelDwn')) {
+      wpt.actFuel -= 10;
+    }
+  }
+  updateFuelLogValues();
+});
 }
 
 function parseDateTime(dateStr, timeStr) {
@@ -1212,13 +1289,70 @@ function setActiveWeather() {
     return taf;
 }
 
-function showFuelLog(waypoint) {
-  const fuelLogs = document.querySelectorAll(`.${waypoint}fuelLog`);
-  if (fuelLogs.length === 0) {
-    console.warn(`No elements found with class ${waypoint}fuelLog`);
-    return;
-  }
-  fuelLogs.forEach(fuelLog => {
-    fuelLog.style.display = fuelLog.style.display === 'none' ? 'block' : 'none';
-  });
+
+function createFuelLog(){
+  fltRls.fuelLog = {};
+  fltRls.fuelLog.plndTOFuel = parseInt(fltRls.fuel[9][2])-parseInt(fltRls.fuel[7][2]);
+  fltRls.fuelLog.actTOFuel = fltRls.fuelLog.plndTOFuel;
+  fltRls.fuelLog.wpts = [];
+  for (const wpt of fltRls.NavLog) {
+
 }
+for (let i = 0; i < fltRls.NavLog.length; i++) {
+	const fwpt = {};
+	fwpt.name = fltRls.NavLog[i][1];
+	
+	fwpt.plndTime = timeToMinutes(fltRls.NavLog[i][17]);
+	fwpt.plndBurn = parseInt(fltRls.NavLog[i][18]);
+	
+	fwpt.actTime = fwpt.plndTime;
+	fwpt.actBurn = fwpt.plndBurn;
+	fwpt.plndFuel = fltRls.fuelLog.actTOFuel - fwpt.plndBurn;
+	fwpt.actFuel = fwpt.plndFuel;
+	fwpt.dataEntry = false;
+	fltRls.fuelLog.wpts.push(fwpt);
+}
+document.getElementById("ODFuel").innerHTML = fltRls.fuelLog.actTOFuel;
+}
+
+function timeToMinutes(timeStr) {
+  // Split the time string into hours and minutes
+  const [hours, minutes] = timeStr.split(':').map(str => parseInt(str));
+  
+  // Validate input
+  if (isNaN(hours) || isNaN(minutes)) {
+    throw new Error("Invalid time format. Expected 'H:MM'");
+  }
+  
+  // Convert to total minutes
+  return hours * 60 + minutes;
+}
+
+function minutesToTime(minutes) {
+  // Validate input
+  if (typeof minutes !== 'number' || isNaN(minutes) || minutes < 0) {
+    throw new Error("Invalid input. Expected a non-negative number of minutes.");
+  }
+  
+  // Calculate hours and remaining minutes
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = Math.floor(minutes % 60);
+  
+  // Format as H:MM (pad minutes with leading zero if needed)
+  return `${hours}:${remainingMinutes.toString().padStart(2, '0')}`;
+}
+
+function updateFuelLogValues(){
+	document.getElementById("ODFuel").innerHTML = fltRls.fuelLog.actTOFuel;
+	for (let i = 0; i < fltRls.fuelLog.wpts.length; i++) {
+		wpt = fltRls.fuelLog.wpts[i];
+		wpt.plndFuel = fltRls.fuelLog.actTOFuel - wpt.plndBurn;
+		document.getElementById(wpt.name +"expTime").textContent = minutesToTime(wpt.plndTime); //Convert to H:MM
+		document.getElementById(wpt.name+"actTime").textContent = minutesToTime(wpt.actTime); //Convert to H:MM
+		document.getElementById(wpt.name+"expFuel").textContent = wpt.plndFuel;
+		document.getElementById(wpt.name+"actFuel").textContent = wpt.actFuel; 
+		document.getElementById(wpt.name+"dTime").textContent = wpt.actTime - wpt.plndTime; 
+		document.getElementById(wpt.name+"dFuel").textContent = wpt.actFuel - wpt.plndFuel; 
+	}
+}
+
